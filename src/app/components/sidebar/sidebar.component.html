@@ -24,7 +24,8 @@
     </button>
   </div>
 
-  <div *ngIf="isSmallScreen" class="screen-warning">
+  <div *ngIf="isSmallScreen && !dismissedWarning" class="screen-warning">
+    <button class="close-btn" (click)="dismissWarning()">Dismiss</button>
     WriteME is not designed for small screens.
     For best experience please use a desktop size screen.
   </div>

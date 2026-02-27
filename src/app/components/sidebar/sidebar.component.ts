@@ -19,7 +19,10 @@ import { IconPanelComponent } from '../icon-panel/icon-panel.component';
 })
 export class SidebarComponent {
   activeTab: 'file' | 'edit' | 'icons' = 'file';
+
+  //Mobile Warning
   isSmallScreen = false;
+  dismissedWarning = false;
 
   setTab(tab: 'file' | 'edit' | 'icons') {
     this.activeTab = tab;
@@ -28,6 +31,10 @@ export class SidebarComponent {
   @HostListener('window:resize')
   onResize() {
     this.checkScreenSize();
+  }
+
+  dismissWarning() {
+    this.dismissedWarning = true;
   }
 
   private checkScreenSize() {
