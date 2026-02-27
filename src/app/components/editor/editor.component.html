@@ -1,4 +1,17 @@
-<div class="editor-inner p-4">
-  <h5>Editor Area</h5>
-  <p class="text-secondary">Markdown editor will be implemented here.</p>
+<div class="editor-container">
+  <div class="line-numbers">
+    <div *ngFor="let line of lines; let i = index"
+      [class.active]="i+1 === activeLine">
+      {{i+1}}
+    </div>
+  </div>
+
+  <textarea
+    class="editor-input"
+    [(ngModel)]="content"
+    (input)="updateLines()"
+    (scroll)="syncScroll($event)"
+    (keyup)="updateActiveLine($event)"
+    (click)="updateActiveLine($event)"
+    (keydown)="handleTabs($event)"></textarea>
 </div>
