@@ -7,6 +7,33 @@
 .sidebar-inner {
   height: 100%;
   color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 1rem;
+}
+
+.panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.panel::-webkit-scrollbar-track {
+  background-color: var(--bg-main);
+}
+
+.panel::-webkit-scrollbar-thumb {
+  background-color: var(--btn-bg-hover);
+  border-radius: 4px;
+}
+
+.panel::-webkit-scrollbar-thumb:hover {
+  background-color: var(--btn-bg);
 }
 
 .brand {
@@ -44,7 +71,7 @@
   background: var(--warn-bg);
   color: var(--warn-text);
   border-left: 4px solid var(--warn-border);
-  padding: 1.25rem 1.25rem 1rem 3rem; 
+  padding: 1.25rem 1.25rem 1rem 3rem;
   margin: 1rem 0.5rem;
   border-radius: 4px;
   font-size: 0.95rem;
