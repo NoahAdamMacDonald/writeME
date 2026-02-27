@@ -56,7 +56,6 @@ export class FilePanelComponent {
     a.click();
 
     URL.revokeObjectURL(url);
-
     this.showConfirmation('File exported Successfully');
   }
 
