@@ -29,6 +29,11 @@ export class EditorComponent {
     this.activeLine = before.split('\n').length;
   }
 
+  updateSelection(event: any) {
+    const textarea = event.target;
+    this.editorStateService.updateSelection(textarea.selectionStart, textarea.selectionEnd);
+  }
+
   onKeyUp(event: any) {
     this.updateLines();
     this.updateActiveLine(event);

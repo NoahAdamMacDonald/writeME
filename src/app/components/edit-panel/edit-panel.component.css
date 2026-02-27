@@ -1,0 +1,40 @@
+.edit-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0.75rem;
+  overflow-y: auto;
+  height: calc(100% - 40px);
+}
+
+.section-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.edit-panel button {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.edit-panel button:hover {
+  background: var(--btn-bg-hover);
+  border-color: var(--btn-bg-hover);
+}
+
+.edit-panel button:active {
+  background: var(--btn-bg-hover);
+  transform: scale(0.98);
+}

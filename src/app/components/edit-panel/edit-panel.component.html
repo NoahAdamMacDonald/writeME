@@ -1,1 +1,31 @@
-<p>edit-panel works!</p>
+<div class="edit-panel">
+  <div class="section-title">Headings</div>
+  <button (click)="applyHeading(1)">H1</button>
+  <button (click)="applyHeading(2)">H2</button>
+  <button (click)="applyHeading(3)">H3</button>
+  <button (click)="applyHeading(4)">H4</button>
+
+  <div class="section-title">Typography</div>
+  <button (click)="wrap('**')">Bold</button>
+  <button (click)="wrap('_')">Italic</button>
+  <button (click)="wrap('~~')">Strikethrough</button>
+
+  <div class="section-title">Alerts</div>
+  <button (click)="insertAlert('NOTE')">Note</button>
+  <button (click)="insertAlert('TIP')">Tip</button>
+  <button (click)="insertAlert('WARNING')">Warning</button>
+  <button (click)="insertAlert('IMPORTANT')">Important</button>
+  <button (click)="insertAlert('CAUTION')">Caution</button>
+
+  <div class="section-title">Lists</div>
+  <button (click)="insertList('- ')">Bullet</button>
+  <button (click)="insertList('1. ')">Numbered</button>
+  <button (click)="insertList('- [ ] ')">Task</button>
+
+  <div class="section-title">Code</div>
+  <button (click)="wrap('`')">Inline Code</button>
+  <button (click)="insertCodeBlock()">Code Block</button>
+
+  <div class="section-title">Links</div>
+  <button (click)="insertLink()">Link</button>
+</div>
