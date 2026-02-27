@@ -33,6 +33,15 @@ export class EditorPageComponent {
   @HostListener('document:mouseup')
   stopResizing() {
     this.resizing = false;
+    localStorage.setItem('sidebarWidth', this.sidebarWidth.toString());
+  }
+
+  constructor() {
+    const saved = localStorage.getItem('sidebarWidth');
+
+    if (saved) {
+      this.sidebarWidth = parseInt(saved);
+    }
   }
 
 }
