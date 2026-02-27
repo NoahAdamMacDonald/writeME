@@ -2,4 +2,6 @@
   <button (click)="importFile()">Import File</button>
   <button (click)="exportFile()">Export File</button>
   <button (click)="copyToClipboard()">Copy to Clipboard</button>
+
+  <input type="file" #fileInput accept=".md, .txt" (change)="handleFile($event)" hidden>
 </div>
