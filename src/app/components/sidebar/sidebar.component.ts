@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 import { FilePanelComponent } from '../file-panel/file-panel.component';
 import { EditPanelComponent } from '../edit-panel/edit-panel.component';
@@ -7,7 +8,7 @@ import { IconPanelComponent } from '../icon-panel/icon-panel.component';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [FilePanelComponent, EditPanelComponent, IconPanelComponent],
+  imports: [CommonModule,FilePanelComponent, EditPanelComponent, IconPanelComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
