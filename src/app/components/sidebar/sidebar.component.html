@@ -1,0 +1,33 @@
+<div class="sidebar-inner">
+
+  <div class="brand">
+    WriteME
+  </div>
+
+  <div class="tabs">
+    <button
+      (click)="setTab('file')"
+      [class.active]="activeTab === 'file'">
+      File
+    </button>
+
+    <button
+      (click)="setTab('edit')"
+      [class.active]="activeTab === 'edit'">
+      Edit
+    </button>
+
+    <button
+      (click)="setTab('icons')"
+      [class.active]="activeTab === 'icons'">
+      Icons
+    </button>
+  </div>
+
+  <div class="panel">
+    <app-file-panel *ngIf="activeTab === 'file'"></app-file-panel>
+    <app-edit-panel *ngIf="activeTab === 'edit'"></app-edit-panel>
+    <app-icon-panel *ngIf="activeTab === 'icons'"></app-icon-panel>
+  </div>
+
+</div>

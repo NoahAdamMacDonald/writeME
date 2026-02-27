@@ -1,0 +1,5 @@
+.editor-inner {
+  height: 100%;
+  overflow-y: auto;
+  color: var(--text-primary);
+}

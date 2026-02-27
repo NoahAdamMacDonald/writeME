@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --brand-bg: #130891;
+
+  --bg-main: #1b1b1b;
+  --bg-sidebar: #151515;
+  --bg-line-numbers: #181818;
+
+  --text-primary: #f5f5f5;
+  --text-secondary: #b5b5b5;
+  --text-accent: #ff5c5c;
+
+  --border-subtle: #2a2a2a;
+
+  --btn-bg: #222;
+  --btn-bg-hover: #2e2e2e;
+  --btn-text: #f5f5f5;
+
+}

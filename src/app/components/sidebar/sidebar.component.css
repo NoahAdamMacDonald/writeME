@@ -1,0 +1,33 @@
+.sidebar-inner {
+  height: 100%;
+  color: var(--text-primary);
+}
+
+.brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  background-color: var(--brand-bg);
+  color: var(--text-primary);
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  text-align: center;
+}
+
+.tabs button.active {
+  background: var(--btn-bg-hover);
+  font-weight: 600;
+}
