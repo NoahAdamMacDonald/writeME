@@ -7,12 +7,13 @@ import { EditorComponent } from "../../components/editor/editor.component";
   standalone: true,
   imports: [SidebarComponent, EditorComponent],
   templateUrl: './editor-page.component.html',
-  styleUrl: './editor-page.component.css'
+  styleUrl: './editor-page.component.css',
 })
 export class EditorPageComponent {
   sidebarWidth = 240;
   resizing = false;
 
+  
   startResizing(event: MouseEvent) {
     event.preventDefault();
     this.resizing = true;
@@ -20,12 +21,12 @@ export class EditorPageComponent {
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    if(!this.resizing) return;
+    if (!this.resizing) return;
 
     const newSidebarWidth = event.clientX;
 
-    const min=240;                 //Min Width allowed
-    const max=window.innerWidth/2; //Max Width allowed
+    const min = 240;                   //Min Width allowed
+    const max = window.innerWidth / 2; //Max Width allowed
 
     this.sidebarWidth = Math.min(Math.max(min, newSidebarWidth), max);
   }
@@ -43,5 +44,4 @@ export class EditorPageComponent {
       this.sidebarWidth = parseInt(saved);
     }
   }
-
 }

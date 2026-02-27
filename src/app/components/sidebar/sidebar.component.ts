@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FilePanelComponent } from '../file-panel/file-panel.component';
@@ -8,14 +8,33 @@ import { IconPanelComponent } from '../icon-panel/icon-panel.component';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule,FilePanelComponent, EditPanelComponent, IconPanelComponent],
+  imports: [
+    CommonModule,
+    FilePanelComponent,
+    EditPanelComponent,
+    IconPanelComponent,
+  ],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
-  activeTab: 'file' | 'edit' |'icons' = 'file';
+  activeTab: 'file' | 'edit' | 'icons' = 'file';
+  isSmallScreen = false;
 
   setTab(tab: 'file' | 'edit' | 'icons') {
     this.activeTab = tab;
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize() {
+    this.isSmallScreen = window.innerWidth < 768;
+  }
+
+  constructor() {
+    this.checkScreenSize();
   }
 }

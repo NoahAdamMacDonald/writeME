@@ -24,6 +24,11 @@
     </button>
   </div>
 
+  <div *ngIf="isSmallScreen" class="screen-warning">
+    WriteME is not designed for small screens.
+    For best experience please use a desktop size screen.
+  </div>
+
   <div class="panel">
     <app-file-panel *ngIf="activeTab === 'file'"></app-file-panel>
     <app-edit-panel *ngIf="activeTab === 'edit'"></app-edit-panel>

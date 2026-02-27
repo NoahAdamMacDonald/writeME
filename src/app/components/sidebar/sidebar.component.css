@@ -1,3 +1,9 @@
+:host {
+  --warn-bg: #fff3cd;
+  --warn-text: #664d03;
+  --warn-border: #ffca2c;
+}
+
 .sidebar-inner {
   height: 100%;
   color: var(--text-primary);
@@ -30,4 +36,15 @@
 .tabs button.active {
   background: var(--btn-bg-hover);
   font-weight: 600;
+}
+
+.screen-warning {
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  border-left: 4px solid var(--warn-border);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
