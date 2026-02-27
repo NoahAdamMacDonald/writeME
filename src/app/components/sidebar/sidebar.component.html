@@ -24,8 +24,15 @@
     </button>
   </div>
 
+  <!--Mobile warning screen-->
   <div *ngIf="isSmallScreen && !dismissedWarning" class="screen-warning">
-    <button class="close-btn" (click)="dismissWarning()">Dismiss</button>
+    <svg class="warn-icon" viewBox="0 0 24 24">
+      <path fill="currentColor"
+        d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+    </svg>
+
+    <button class="close-btn" (click)="dismissWarning()">X</button>
+
     WriteME is not designed for small screens.
     For best experience please use a desktop size screen.
   </div>
