@@ -25,7 +25,7 @@ export class EditorPageComponent {
     const newSidebarWidth = event.clientX;
 
     const min=240;                 //Min Width allowed
-    const max=window.innerWidth/3; //Max Width allowed
+    const max=window.innerWidth/2; //Max Width allowed
 
     this.sidebarWidth = Math.min(Math.max(min, newSidebarWidth), max);
   }
