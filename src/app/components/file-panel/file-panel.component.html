@@ -40,4 +40,8 @@
     (change)="handleFile($event)"
     hidden
   />
+
+  <div *ngIf="showSuccess" class="confirmation">
+    {{successMessage}}
+  </div>
 </div>

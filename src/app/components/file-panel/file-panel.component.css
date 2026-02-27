@@ -1,3 +1,9 @@
+:host {
+  --success-text: #d4edda;
+  --success-bg: #155724;
+  --success-border: #4cff4c;
+}
+
 .file-panel {
   display: flex;
   flex-direction: column;
@@ -6,6 +12,7 @@
   border-top: 1px solid var(--border-subtle);
   margin-top: 1rem;
   padding-top: 1rem;
+  overflow: visible;
 }
 
 .file-panel button {
@@ -39,4 +46,23 @@
   height: 18px;
   flex-shrink: 0;
   color: var(--btn-text);
+}
+
+
+/*Success Message*/
+.confirmation {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--success-bg);
+  color: var(--success-text);
+  border-left: 4px solid var(--success-border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  animation: fadeInOut 2s ease forwards;
+}
+@keyframes fadeInOut {
+  0%   { opacity: 0; transform: translateY(4px); }
+  10%  { opacity: 1; transform: translateY(0); }
+  90%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(4px); }
 }
