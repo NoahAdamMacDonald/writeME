@@ -1,7 +1,43 @@
 <div class="file-panel">
-  <button (click)="importFile()">Import File</button>
-  <button (click)="exportFile()">Export File</button>
-  <button (click)="copyToClipboard()">Copy to Clipboard</button>
+  <button (click)="importFile()">
+    <svg class="icon" viewBox="0 0 24 24">
+      <path fill="currentColor"
+        d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0
+           1.1.9 2 2 2h16c1.1 0 2-.9
+           2-2V8c0-1.1-.9-2-2-2zm-6
+           9l-4-4 1.41-1.41L13 11.17V4h2v7.17l1.59-1.58L18
+           11l-4 4z"/>
+    </svg>
+    Import File
+  </button>
 
-  <input type="file" #fileInput accept=".md, .txt" (change)="handleFile($event)" hidden>
+  <button (click)="exportFile()">
+    <svg class="icon" viewBox="0 0 24 24">
+      <path fill="currentColor"
+        d="M5 20h14v-2H5v2zm7-18l-5.5
+           5.5h4v6h3v-6h4L12 2z"/>
+    </svg>
+    Export File
+  </button>
+
+  <button (click)="copyToClipboard()">
+    <svg class="icon" viewBox="0 0 24 24">
+      <path fill="currentColor"
+        d="M16 1H4c-1.1 0-2 .9-2
+           2v14h2V3h12V1zm3 4H8c-1.1
+           0-2 .9-2 2v14c0 1.1.9 2 2
+           2h11c1.1 0 2-.9
+           2-2V7c0-1.1-.9-2-2-2zm0
+           16H8V7h11v14z"/>
+    </svg>
+    Copy to Clipboard
+  </button>
+
+  <input
+    type="file"
+    #fileInput
+    accept=".md, .txt"
+    (change)="handleFile($event)"
+    hidden
+  />
 </div>
