@@ -2,6 +2,8 @@ import { Component} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { EditorStateService } from '../../services/editor-state.service';
+
 @Component({
   selector: 'app-editor',
   standalone: true,
@@ -17,6 +19,7 @@ export class EditorComponent {
   updateLines() {
     const count = this.content.split('\n').length;
     this.lines = Array.from({ length: count }, (_, i) => i + 1);
+    this.editorStateService.setContent(this.content);
   }
 
   updateActiveLine(event: any) {
@@ -74,5 +77,12 @@ export class EditorComponent {
         textarea.selectionStart = textarea.selectionEnd = start + 4;
       });
     }
+  }
+
+  constructor(private editorStateService: EditorStateService) {
+    this.editorStateService.content$.subscribe((content) => {
+      this.content = content
+      this.updateLines();
+    })
   }
 }
