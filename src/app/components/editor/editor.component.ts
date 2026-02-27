@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class EditorComponent {
   content = '';
-  lines : number[] = [1];
+  lines: number[] = [1];
   activeLine = 1;
 
   updateLines() {
@@ -22,7 +22,7 @@ export class EditorComponent {
   updateActiveLine(event: any) {
     const textarea = event.target;
     const position = textarea.selectionStart;
-    const before = this.content.slice(0,position);
+    const before = this.content.slice(0, position);
     this.activeLine = before.split('\n').length;
   }
 
@@ -33,17 +33,40 @@ export class EditorComponent {
   }
 
   handleTabs(event: KeyboardEvent) {
-    if(event.key === 'Tab') {
+    const textarea = event.target as HTMLTextAreaElement;
+
+    if (event.key === 'Tab') {
       event.preventDefault();
 
-      const textarea = event.target as HTMLTextAreaElement;
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
 
-      this.content = this.content.substring(0,start) + '    ' + this.content.substring(end);
+      const before = this.content.substring(0, start);
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const currentLine = this.content.substring(lineStart, end);
+
+      //Unindent
+      if (event.shiftKey) {
+        if (currentLine.startsWith('    ')) {
+          this.content =
+            this.content.substring(0, lineStart) +
+            currentLine.substring(4) +
+            this.content.substring(end);
+
+          const newPos = start - 4;
+          setTimeout(() => {
+            textarea.selectionStart = textarea.selectionEnd = newPos;
+          });
+        }
+        return;
+      }
+
+      //Indent
+      this.content =
+        this.content.substring(0, start) + '    ' + this.content.substring(end);
 
       setTimeout(() => {
-        textarea.selectionStart=textarea.selectionEnd=start+4;
+        textarea.selectionStart = textarea.selectionEnd = start + 4;
       });
     }
   }
