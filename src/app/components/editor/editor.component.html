@@ -11,7 +11,7 @@
     [(ngModel)]="content"
     (input)="updateLines()"
     (scroll)="syncScroll($event)"
-    (keyup)="updateActiveLine($event)"
-    (click)="updateActiveLine($event)"
+    (keyup)="onKeyUp($event)"
+    (click)="onKeyUp($event)"
     (keydown)="handleTabs($event)"></textarea>
 </div>

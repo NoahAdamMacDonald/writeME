@@ -26,6 +26,11 @@ export class EditorComponent {
     this.activeLine = before.split('\n').length;
   }
 
+  onKeyUp(event: any) {
+    this.updateLines();
+    this.updateActiveLine(event);
+  }
+
   syncScroll(event: any) {
     const textarea = event.target;
     const lineNumbers = document.querySelector('.line-numbers') as HTMLElement;
