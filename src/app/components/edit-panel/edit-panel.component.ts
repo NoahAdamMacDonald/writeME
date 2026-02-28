@@ -25,7 +25,7 @@ export class EditPanelComponent {
     transform: (
       content: string,
       start: number,
-      end: number
+      end: number,
     ) => { newContent: string; newStart: number; newEnd: number },
   ) {
     const content = this.editor.content;
@@ -40,9 +40,7 @@ export class EditPanelComponent {
         const lineEnd = content.indexOf('\n', start);
         const end = lineEnd === -1 ? content.length : lineEnd;
 
-        return this.editor.applyMarkdown((c) =>
-          transform(c, lineStart, end),
-        );
+        return this.editor.applyMarkdown((c) => transform(c, lineStart, end));
       }
 
       const lineIndex = this.editor.lastKnownLine - 1;
@@ -69,6 +67,7 @@ export class EditPanelComponent {
     );
   }
 
+
   // MARKDOWN ACTIONS
   wrap(wrapper: string) {
     this.applyMarkdownAction((content, start, end) => {
@@ -92,8 +91,7 @@ export class EditPanelComponent {
         return { newContent, newStart, newEnd };
       }
 
-      const newContent =
-        before + wrapper + selected + wrapper + after;
+      const newContent = before + wrapper + selected + wrapper + after;
 
       const newStart = start + wrapper.length;
       const newEnd = end + wrapper.length;
@@ -121,8 +119,7 @@ export class EditPanelComponent {
       const selected = content.slice(start, end) || 'Alert text here';
       const block = `> [!${type}]\n> ${selected}\n`;
 
-      const newContent =
-        content.slice(0, start) + block + content.slice(end);
+      const newContent = content.slice(0, start) + block + content.slice(end);
 
       const newPos = start + block.length;
 
@@ -142,8 +139,7 @@ export class EditPanelComponent {
         .map((l) => prefix + l)
         .join('\n');
 
-      const newContent =
-        content.slice(0, start) + lines + content.slice(end);
+      const newContent = content.slice(0, start) + lines + content.slice(end);
 
       const newStart = start;
       const newEnd = start + lines.length;
@@ -157,8 +153,7 @@ export class EditPanelComponent {
       const selected = content.slice(start, end) || 'link text';
       const link = `[${selected}](https://example.com)`;
 
-      const newContent =
-        content.slice(0, start) + link + content.slice(end);
+      const newContent = content.slice(0, start) + link + content.slice(end);
 
       const newStart = start + 1;
       const newEnd = start + 1 + selected.length;
@@ -172,8 +167,7 @@ export class EditPanelComponent {
       const selected = content.slice(start, end) || 'code';
       const block = '```\n' + selected + '\n```\n';
 
-      const newContent =
-        content.slice(0, start) + block + content.slice(end);
+      const newContent = content.slice(0, start) + block + content.slice(end);
 
       const newStart = start + 4;
       const newEnd = start + 4 + selected.length;
