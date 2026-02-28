@@ -1,18 +1,19 @@
 <div class="editor-container">
   <div class="line-numbers">
     <div *ngFor="let line of lines; let i = index"
-      [class.active]="i+1 === activeLine">
-      {{i+1}}
+         [class.active]="i + 1 === activeLine">
+      {{ i + 1 }}
     </div>
   </div>
 
   <textarea
+    #textarea
     class="editor-input"
     [(ngModel)]="content"
-    (input)="updateLines()"
-    (scroll)="syncScroll($event)"
+    (input)="onInput($event)"
+    (click)="onClick($event)"
     (keyup)="onKeyUp($event)"
-    (click)="onKeyUp($event)"
-    (select)="updateSelection($event)"
-    (keydown)="handleTabs($event)"></textarea>
+    (scroll)="syncScroll($event)"
+    (keydown)="handleTabs($event)">
+  </textarea>
 </div>

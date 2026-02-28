@@ -46,7 +46,7 @@ export class FilePanelComponent {
 
   //Export Handling
   exportFile() {
-    const content = this.editorStateService.getContent();
+    const content = this.editorStateService.content;
     const blob = new Blob([content], {type: 'text/markdown'});
     const url= URL.createObjectURL(blob);
 
@@ -61,7 +61,7 @@ export class FilePanelComponent {
 
   //Clipboard Handling
   async copyToClipboard() {
-    const content = this.editorStateService.getContent();
+    const content = this.editorStateService.content;
     await navigator.clipboard.writeText(content);
 
     this.showConfirmation('Content copied to clipboard');

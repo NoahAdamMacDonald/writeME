@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class EditorStateService {
   private contentSubject = new BehaviorSubject<string>('');
   content$ = this.contentSubject.asObservable();
 
   content = '';
+
   selectionStart = 0;
   selectionEnd = 0;
 
-  setContent(content: string) {
-    this.content = content;
-    this.contentSubject.next(content);
+  cursorLine = 1;
+  lastKnownLine = 1;
+
+  setContent(value: string) {
+    this.content = value;
+    this.contentSubject.next(value);
   }
 
   updateSelection(start: number, end: number) {
@@ -22,22 +24,26 @@ export class EditorStateService {
     this.selectionEnd = end;
   }
 
-  applyMarkdown(
-    transform : (content: string, start: number, end:number) => {
-      newContent: string;
-      newStart: number;
-      newEnd: number;
-    }
-  ) {
-    const {newContent, newStart, newEnd} = transform(this.content, this.selectionStart, this.selectionEnd);
-
-    this.setContent(newContent);
-
-    this.selectionStart = newStart;
-    this.selectionEnd=newEnd;
+  updateCursorLine(line: number) {
+    this.cursorLine = line;
+    this.lastKnownLine = line;
   }
 
-  getContent() {
-    return this.contentSubject.getValue();
+  applyMarkdown(
+    transform: (
+      content: string,
+      start: number,
+      end: number,
+    ) => { newContent: string; newStart: number; newEnd: number },
+  ) {
+    const { newContent, newStart, newEnd } = transform(
+      this.content,
+      this.selectionStart,
+      this.selectionEnd,
+    );
+
+    this.setContent(newContent);
+    this.selectionStart = newStart;
+    this.selectionEnd = newEnd;
   }
 }
