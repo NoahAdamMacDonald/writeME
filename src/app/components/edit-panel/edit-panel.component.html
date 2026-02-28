@@ -1,31 +1,135 @@
 <div class="edit-panel">
-  <div class="section-title">Headings</div>
-  <button (click)="applyHeading(1)">H1</button>
-  <button (click)="applyHeading(2)">H2</button>
-  <button (click)="applyHeading(3)">H3</button>
-  <button (click)="applyHeading(4)">H4</button>
 
-  <div class="section-title">Typography</div>
-  <button (click)="wrap('**')">Bold</button>
-  <button (click)="wrap('_')">Italic</button>
-  <button (click)="wrap('~~')">Strikethrough</button>
+  <!-- Section Template -->
+  <div class="section">
+    <div class="section-header collapsed"
+         data-bs-toggle="collapse"
+         data-bs-target="#headingsCollapse"
+         aria-expanded="false">
+      <span>Headings</span>
+      <svg class="chevron" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"
+              fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
 
-  <div class="section-title">Alerts</div>
-  <button (click)="insertAlert('NOTE')">Note</button>
-  <button (click)="insertAlert('TIP')">Tip</button>
-  <button (click)="insertAlert('WARNING')">Warning</button>
-  <button (click)="insertAlert('IMPORTANT')">Important</button>
-  <button (click)="insertAlert('CAUTION')">Caution</button>
+    <div id="headingsCollapse" class="collapse">
+      <div class="section-body">
+        <button (click)="applyHeading(1)">H1</button>
+        <button (click)="applyHeading(2)">H2</button>
+        <button (click)="applyHeading(3)">H3</button>
+        <button (click)="applyHeading(4)">H4</button>
+      </div>
+    </div>
+  </div>
 
-  <div class="section-title">Lists</div>
-  <button (click)="insertList('- ')">Bullet</button>
-  <button (click)="insertList('1. ')">Numbered</button>
-  <button (click)="insertList('- [ ] ')">Task</button>
+  <!-- Typography -->
+  <div class="section">
+    <div class="section-header collapsed"
+         data-bs-toggle="collapse"
+         data-bs-target="#typographyCollapse"
+         aria-expanded="false">
+      <span>Typography</span>
+      <svg class="chevron" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"
+              fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
 
-  <div class="section-title">Code</div>
-  <button (click)="wrap('`')">Inline Code</button>
-  <button (click)="insertCodeBlock()">Code Block</button>
+    <div id="typographyCollapse" class="collapse">
+      <div class="section-body">
+        <button (click)="wrap('**')">Bold</button>
+        <button (click)="wrap('_')">Italic</button>
+        <button (click)="wrap('~~')">Strikethrough</button>
+      </div>
+    </div>
+  </div>
 
-  <div class="section-title">Links</div>
-  <button (click)="insertLink()">Link</button>
+  <!-- Alerts -->
+  <div class="section">
+    <div class="section-header collapsed"
+         data-bs-toggle="collapse"
+         data-bs-target="#alertsCollapse"
+         aria-expanded="false">
+      <span>Alerts</span>
+      <svg class="chevron" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"
+              fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div id="alertsCollapse" class="collapse">
+      <div class="section-body">
+        <button (click)="insertAlert('NOTE')">Note</button>
+        <button (click)="insertAlert('TIP')">Tip</button>
+        <button (click)="insertAlert('WARNING')">Warning</button>
+        <button (click)="insertAlert('IMPORTANT')">Important</button>
+        <button (click)="insertAlert('CAUTION')">Caution</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lists -->
+  <div class="section">
+    <div class="section-header collapsed"
+         data-bs-toggle="collapse"
+         data-bs-target="#listsCollapse"
+         aria-expanded="false">
+      <span>Lists</span>
+      <svg class="chevron" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"
+              fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div id="listsCollapse" class="collapse">
+      <div class="section-body">
+        <button (click)="insertList('- ')">Bullet</button>
+        <button (click)="insertList('1. ')">Numbered</button>
+        <button (click)="insertList('- [ ] ')">Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code -->
+  <div class="section">
+    <div class="section-header collapsed"
+         data-bs-toggle="collapse"
+         data-bs-target="#codeCollapse"
+         aria-expanded="false">
+      <span>Code</span>
+      <svg class="chevron" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"
+              fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div id="codeCollapse" class="collapse">
+      <div class="section-body">
+        <button (click)="wrap('`')">Inline Code</button>
+        <button (click)="insertCodeBlock()">Code Block</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Links -->
+  <div class="section">
+    <div class="section-header collapsed"
+         data-bs-toggle="collapse"
+         data-bs-target="#linksCollapse"
+         aria-expanded="false">
+      <span>Links</span>
+      <svg class="chevron" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"
+              fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div id="linksCollapse" class="collapse">
+      <div class="section-body">
+        <button (click)="insertLink()">Link</button>
+      </div>
+    </div>
+  </div>
+
 </div>

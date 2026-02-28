@@ -1,40 +1,125 @@
+:host {
+  --accent: var(--brand-bg);
+  --accent-light: color-mix(in srgb, var(--accent) 40%, white 60%);
+  --accent-dark: color-mix(in srgb, var(--accent) 60%, black 40%);
+
+  --header-gradient-end: color-mix(in srgb, var(--header-bg) 80%, var(--accent) 20%);
+  --header-gradient-hover-end: color-mix(in srgb, var(--header-bg-hover) 65%, var(--accent) 35%);
+
+  --button-hover: color-mix(in srgb, var(--panel-bg-hover) 70%, var(--accent) 30%);
+  --shadow-soft: 0 4px 14px rgba(0,0,0,0.12);
+  --shadow-button: 0 3px 10px rgba(0,0,0,0.15);
+}
+
 .edit-panel {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem 0.75rem;
-  overflow-y: auto;
-  height: calc(100% - 40px);
-}
-
-.section-title {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-top: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.edit-panel button {
+  gap: 1rem;
   width: 100%;
-  padding: 0.5rem 0.75rem;
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  border: 1px solid var(--border-subtle);
-  border-radius: 4px;
-  text-align: left;
-  font-size: 0.9rem;
+}
+
+.section {
+  border: 1px solid var(--divider);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--header-bg);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+.section:hover {
+  box-shadow: 0 4px 12px var(--shadow-soft);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.section-header {
+  padding: 0.9rem 1.2rem;
+  margin: 0;
+  background: linear-gradient(to right, var(--header-bg), var(--header-gradient-end));
+  border-left: 4px solid var(--accent);
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-main);
+  font-weight: 600;
+  letter-spacing: 0.25px;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
-.edit-panel button:hover {
-  background: var(--btn-bg-hover);
-  border-color: var(--btn-bg-hover);
+.section-header:hover {
+  background: linear-gradient(to right, var(--header-bg), var(--header-gradient-end));
+  color: var(--accent);
 }
 
-.edit-panel button:active {
-  background: var(--btn-bg-hover);
-  transform: scale(0.98);
+.section-header.collapsed {
+  border-left-color: var(--accent-dark);
+}
+
+.chevron {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease, opacity 0.25s ease, color 0.25s ease;
+  opacity: 0.75;
+}
+
+.section-header:hover .chevron {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.section-header:not(.collapsed) .chevron {
+  transform: rotate(0deg);
+}
+
+.section-header.collapsed .chevron {
+  transform: rotate(-90deg);
+}
+
+.section-body {
+  padding: 1rem 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  background: var(--header-bg);
+}
+
+button {
+  padding: 0.5rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid var(--divider);
+  background: var(--header-bg);
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease, transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  background: var(--button-hover);
+  color: var(--accent-light);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px var(--shadow-button);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .section-body {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  button {
+    width: 100%;
+    text-align: left;
+  }
+
+  .section-header {
+    padding: 0.75rem 1rem;
+  }
 }
