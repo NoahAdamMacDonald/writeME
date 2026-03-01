@@ -136,6 +136,7 @@
   background: var(--danger-hover);
 }
 
+/*Warning Message*/
 .warning-message {
   margin-top: 0.75rem;
   padding: 0.5rem 0.75rem;
@@ -152,4 +153,27 @@
   10%  { opacity: 1; transform: translateY(0); }
   90%  { opacity: 1; }
   100% { opacity: 0; transform: translateY(4px); }
+}
+
+
+/*Search bar*/
+.search-bar {
+  padding: 0 0.75rem 0.5rem 0.75rem;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-main);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--brand-bg);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-bg) 40%, transparent);
 }

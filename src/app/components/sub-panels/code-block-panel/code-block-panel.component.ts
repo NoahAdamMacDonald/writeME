@@ -32,6 +32,9 @@ export class CodeBlockPanelComponent implements OnInit {
 
   languages: string[] = languageData;
 
+  searchTerm = '';
+  filteredLanguages: string[] = this.languages;
+
   private showError(msg: string) {
     this.warningMessage = msg;
     this.showWarning = true;
@@ -86,6 +89,20 @@ ${fence}
     pre.scrollLeft = ta.scrollLeft;
   }
 
+  applySearch() {
+    const term = this.searchTerm.trim().toLowerCase();
+
+    if (!term) {
+      this.filteredLanguages = this.languages;
+      return;
+    }
+
+    this.filteredLanguages = this.languages.filter((lang) =>
+      lang.toLowerCase().includes(term)
+    );
+  }
+
+  // New Code Block
   insert() {
     if (!this.validate()) return;
 
@@ -105,6 +122,7 @@ ${fence}
     this.editor.setSidebarTab('edit');
   }
 
+  // Existing Code Block
   loadExistingCodeBlock() {
     const content = this.editor.content;
     const cursor = this.editor.selectionStart;
@@ -226,7 +244,7 @@ ${fence}
   }
 
   ngOnInit() {
-    console.log('python:', hljs.getLanguage('python'));
+    this.filteredLanguages = this.languages;
     this.loadExistingCodeBlock();
     this.updateHighlight();
   }
