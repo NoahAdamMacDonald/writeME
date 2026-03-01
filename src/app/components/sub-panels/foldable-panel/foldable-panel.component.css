@@ -1,0 +1,119 @@
+:host {
+  --danger-bg: #721c24;
+  --danger-text: #ffdddd;
+  --danger-border: #aa4444;
+  --danger-hover: #7a1a1a;
+
+  display: block;
+}
+
+.foldable-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.back-btn {
+  padding: 0.5rem 0.75rem;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: var(--btn-hover);
+}
+
+.section-label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.text-input {
+  width: 100%;
+  padding: 0.5rem;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+}
+
+.line-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.delete-line-btn {
+  padding: 0.5rem;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-line-btn:hover:not(:disabled) {
+  background: var(--btn-hover);
+}
+
+.add-line-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-line-btn:hover {
+  background: var(--btn-hover);
+}
+
+.actions button {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.primary-btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--border-subtle);
+}
+
+.primary-btn:hover {
+  background: var(--btn-hover);
+}
+
+.secondary-btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--border-subtle);
+}
+
+.secondary-btn:hover {
+  background: var(--btn-hover);
+}
+
+.danger-btn {
+  background: var(--danger-bg);
+   color: var(--danger-text);
+   border: 1px solid var(--danger-border);
+}
+
+.danger-btn:hover {
+  background: var(--danger-hover);
+}

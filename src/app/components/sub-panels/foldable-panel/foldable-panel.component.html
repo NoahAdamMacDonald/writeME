@@ -1,0 +1,30 @@
+<div class="foldable-panel">
+  <button class="back-btn" (click)="editor.setSidebarTab('edit')">
+    Back
+  </button>
+
+  <div class="section">
+    <label class="section-label">Summary</label>
+    <input class="text-input" [(ngModel)]="summary" />
+  </div>
+
+  <div class="section">
+    <label class="section-label">Content Lines</label>
+    <div class="line-row" *ngFor="let line of lines; let index = index">
+      <input class="text-input" [(ngModel)]="lines[index]" />
+      <button (click)="removeLine(index)"
+              class="delete-line-btn"
+              [disabled]="lines.length===1">
+              Remove
+      </button>
+    </div>
+
+    <button class="add-line-btn" (click)="addLine()">+ Add Line</button>
+  </div>
+
+  <div class="section actions">
+    <button class="danger-btn" (click)="deleteAll()">Delete Foldable</button>
+    <button class="primary-btn" (click)="insert()">Insert</button>
+    <button class="secondary-btn" (click)="copyToClipboard()">Copy to Clipboard</button>
+  </div>
+</div>
