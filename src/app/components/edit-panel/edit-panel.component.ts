@@ -153,20 +153,84 @@ export class EditPanelComponent {
     });
   }
 
-  insertAlert(type: string) {
+
+  /**
+   * Set an alert to the selected text.
+   *
+   * If the selected text contains a line, this function will apply the
+   * alert to the line. If the selected text contains a block of text,
+   * this function will apply the alert to the block of text.
+   *
+   * If the same alert type already exists in the selected block, it will be
+   * removed. If a different alert type already exists, it will be
+   * replaced with the new alert type.
+   *
+   * @param type The type of the alert to apply. Accepted values are
+   * NOTE, TIP, WARNING, IMPORTANT, CAUTION.
+   *
+   * @example <caption>Set a Note alert to the selected text</caption>
+   * <code>setAlert('NOTE')</code>
+   */
+  setAlert(type: string) {
     this.applyMarkdownAction((content, start, end) => {
-      const selected = content.slice(start, end) || 'Alert text here';
-      const block = `> [!${type}]\n> ${selected}\n`;
+      const before = content.slice(0, start);
+      const after = content.slice(end);
 
-      const newContent = content.slice(0, start) + block + content.slice(end);
+      // Expand to full lines
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const lineEndIndex = content.indexOf('\n', end);
+      const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
 
-      const newPos = start + block.length;
+      const fullBefore = content.slice(0, lineStart);
+      const fullBlock = content.slice(lineStart, lineEnd);
+      const fullAfter = content.slice(lineEnd);
 
-      return {
-        newContent,
-        newStart: newPos,
-        newEnd: newPos,
-      };
+      const lines = fullBlock.split('\n');
+
+      // Detect existing alert
+      const alertRegex = /^>\s*\[!(\w+)\]\s*$/;
+      const firstLine = lines[0].trim();
+      const match = firstLine.match(alertRegex);
+      const existingType = match ? match[1] : null;
+
+      // If the Same alert : remove it and exit function
+      if (existingType && existingType.toUpperCase() === type.toUpperCase()) {
+        const withoutAlert = lines
+          .slice(1) // remove the first line (the alert header)
+          .map((line) => line.replace(/^>\s?/, '')) // remove leading "> "
+          .join('\n');
+
+        const newContent = fullBefore + withoutAlert + fullAfter;
+        const newStart = lineStart;
+        const newEnd = lineStart + withoutAlert.length;
+
+        return { newContent, newStart, newEnd };
+      }
+
+      // Replace existing alert and apply new one
+      if (existingType) {
+        const replaced = [
+          `> [!${type}]`,
+          ...lines.slice(1), // keep content lines
+        ].join('\n');
+
+        const newContent = fullBefore + replaced + fullAfter;
+        const newStart = lineStart;
+        const newEnd = lineStart + replaced.length;
+
+        return { newContent, newStart, newEnd };
+      }
+
+      // Apply new alert if none exists
+      const block = [`> [!${type}]`, ...lines.map((line) => `> ${line}`)].join(
+        '\n',
+      );
+
+      const newContent = fullBefore + block + fullAfter;
+      const newStart = lineStart;
+      const newEnd = lineStart + block.length;
+
+      return { newContent, newStart, newEnd };
     });
   }
 
