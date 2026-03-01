@@ -1,7 +1,15 @@
-import { Component, ViewChild, ElementRef, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
 import { EditorStateService } from '../../services/editor-state.service';
+import { TextEditingService } from '../../services/text-editing.service';
 
 @Component({
   selector: 'app-editor',
@@ -12,7 +20,9 @@ import { EditorStateService } from '../../services/editor-state.service';
 })
 export class EditorComponent implements OnInit {
   @ViewChild('textarea') textarea!: ElementRef<HTMLTextAreaElement>;
+
   editorState = inject(EditorStateService);
+  textEdit = inject(TextEditingService);
 
   content = '';
   lines: number[] = [1];
@@ -87,9 +97,36 @@ export class EditorComponent implements OnInit {
   }
 
   onKeyDown(event: KeyboardEvent) {
+    const ta = this.textarea.nativeElement;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+
     if (event.key === 'Tab') {
-      this.handleTabs(event);
+      event.preventDefault();
+
+      const result = event.shiftKey
+        ? this.textEdit.handleShiftTab(this.content, start, end)
+        : this.textEdit.handleTab(this.content, start, end);
+
+      this.applyContentEdit(result, ta);
     }
+  }
+
+  private applyContentEdit(
+    result: { content: string; cursor: number },
+    ta: HTMLTextAreaElement,
+  ) {
+    this.content = result.content;
+    this.editorState.setContent(this.content);
+    localStorage.setItem('editorContent', this.content);
+
+    setTimeout(() => {
+      ta.selectionStart = ta.selectionEnd = result.cursor;
+    });
+
+    this.updateLines();
+    this.updateActiveLine({ target: ta });
+    this.updateSelection({ target: ta });
   }
 
   syncScroll(event: any) {
@@ -99,54 +136,4 @@ export class EditorComponent implements OnInit {
       lineNumbers.scrollTop = ta.scrollTop;
     }
   }
-
-
-
-  handleTabs(event: KeyboardEvent) {
-    const ta = event.target as HTMLTextAreaElement;
-
-    if (event.key !== 'Tab') return;
-    event.preventDefault();
-
-    const start = ta.selectionStart;
-    const end = ta.selectionEnd;
-
-    const before = this.content.substring(0, start);
-    const lineStart = before.lastIndexOf('\n') + 1;
-    const currentLine = this.content.substring(lineStart, end);
-
-    // unindent
-    if (event.shiftKey) {
-      if (currentLine.startsWith('    ')) {
-        this.content =
-          this.content.substring(0, lineStart) +
-          currentLine.substring(4) +
-          this.content.substring(end);
-
-        const newPos = start - 4;
-
-        setTimeout(() => {
-          ta.selectionStart = ta.selectionEnd = newPos;
-        });
-
-        this.editorState.setContent(this.content);
-        localStorage.setItem('editorContent', this.content);
-        this.editorState.updateSelection(newPos, newPos);
-      }
-      return;
-    }
-
-    // indent
-    this.content =
-      this.content.substring(0, start) + '    ' + this.content.substring(end);
-
-    setTimeout(() => {
-      ta.selectionStart = ta.selectionEnd = start + 4;
-    });
-
-    this.editorState.setContent(this.content);
-    localStorage.setItem('editorContent', this.content);
-    this.editorState.updateSelection(start + 4, start + 4);
-  }
 }
-

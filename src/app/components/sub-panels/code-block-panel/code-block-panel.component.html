@@ -29,7 +29,11 @@
 
   <div class="section">
     <label class="section-label">Code</label>
-    <textarea class="code-input" [(ngModel)]="code"></textarea>
+    <textarea
+      class="code-input"
+      [(ngModel)]="code"
+      (keydown)="handleKey($event)"
+    ></textarea>
   </div>
 
   <div class="section actions">

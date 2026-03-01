@@ -1,7 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { EditorStateService } from '../../../services/editor-state.service';
+import { TextEditingService } from '../../../services/text-editing.service';
 
 import languageData from '../../../../assets/languages.json';
 
@@ -14,6 +16,7 @@ import languageData from '../../../../assets/languages.json';
 })
 export class CodeBlockPanelComponent implements OnInit {
   editor = inject(EditorStateService);
+  textEdit = inject(TextEditingService);
 
   language = 'plaintext';
   code = '';
@@ -136,6 +139,61 @@ ${fence}
     });
 
     this.editor.setSidebarTab('edit');
+  }
+
+  // Editing functions
+  handleKey(event: KeyboardEvent) {
+    const ta = event.target as HTMLTextAreaElement;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+
+    if (event.key === 'Tab') {
+      event.preventDefault();
+
+      const result = event.shiftKey
+        ? this.textEdit.handleShiftTab(this.code, start, end)
+        : this.textEdit.handleTab(this.code, start, end);
+
+      this.code = result.content;
+
+      setTimeout(() => {
+        ta.selectionStart = ta.selectionEnd = result.cursor;
+      });
+
+      return;
+    }
+
+    if (['(', '[', '{', '"', "'"].includes(event.key)) {
+      event.preventDefault();
+
+      const result = this.textEdit.handleAutoClose(
+        this.code,
+        start,
+        end,
+        event.key,
+      );
+
+      this.code = result.content;
+
+      setTimeout(() => {
+        ta.selectionStart = ta.selectionEnd = result.cursor;
+      });
+
+      return;
+    }
+
+    if (event.key === 'Backspace') {
+      const result = this.textEdit.handleBackspace(this.code, start, end);
+
+      if (result.content !== this.code) {
+        event.preventDefault();
+        this.code = result.content;
+
+        setTimeout(() => {
+          ta.selectionStart = ta.selectionEnd = result.cursor;
+        });
+      }
+    }
   }
 
   ngOnInit() {
