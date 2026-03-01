@@ -26,6 +26,7 @@ export class SidebarComponent {
 
   setTab(tab: 'file' | 'edit' | 'icons') {
     this.activeTab = tab;
+    localStorage.setItem('activeTab', tab);
   }
 
   @HostListener('window:resize')
@@ -43,5 +44,10 @@ export class SidebarComponent {
 
   constructor() {
     this.checkScreenSize();
+
+    const savedTab = localStorage.getItem('activeTab') as 'file' | 'edit' | 'icons' | null;
+    if (savedTab) {
+      this.activeTab = savedTab;
+    }
   }
 }
