@@ -1,1 +1,32 @@
-<p>icon-panel works!</p>
+<div class="icon-panel">
+  <div *ngFor="let cat of categories" class="section">
+    <div class="section-header"
+        data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#' + cat.id"
+        aria-expanded="false">
+
+        <span>{{cat.icon}} {{cat.name}}</span>
+        <svg class="chevron" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div [id]="cat.id" class="collapse">
+      <div class="section-body">
+        <div *ngFor="let emoji of cat.emojis" class="emoji-row">
+          <span class="emoji">{{emoji.emoji}}</span>
+          <span class="emoji-name">{{emoji.name}}</span>
+
+          <button (click)="copy(emoji.emoji)">Copy</button>
+          <button (click)="copy(emoji.code)">Copy Code</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
