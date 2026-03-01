@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import emojiData from '../../assets/emoji.json';
@@ -7,6 +7,8 @@ import emojiData from '../../assets/emoji.json';
 @Injectable({ providedIn: 'root' })
 export class EditorStateService {
   private contentSubject = new BehaviorSubject<string>('');
+
+  sidebarTab = signal<'file' | 'edit' | 'icons' | 'foldable'>('file');
 
   //Map for emoji conversion
   private codeToEmoji = new Map<string, string>();
@@ -22,6 +24,7 @@ export class EditorStateService {
   cursorLine = 1;
   lastKnownLine = 1;
 
+  //Editor handler
   setContent(value: string) {
     this.content = value;
     this.contentSubject.next(value);
@@ -56,10 +59,11 @@ export class EditorStateService {
     this.selectionEnd = newEnd;
   }
 
+  //Emoji conversion
   convertEmojiToCode(text: string) {
     let result = text;
 
-    for(const [emoji, code] of this.emojiToCode.entries()){
+    for (const [emoji, code] of this.emojiToCode.entries()) {
       result = result.split(emoji).join(code);
     }
     return result;
@@ -68,17 +72,22 @@ export class EditorStateService {
   convertCodeToEmoji(text: string) {
     let result = text;
 
-    for(const [code, emoji] of this.codeToEmoji.entries()){
+    for (const [code, emoji] of this.codeToEmoji.entries()) {
       result = result.split(code).join(emoji);
     }
     return result;
   }
 
+  //Panel handler
+  setSidebarTab(tab: 'file' | 'edit' | 'icons' | 'foldable') {
+    this.sidebarTab.set(tab);
+  }
+
   constructor() {
     const categories = (emojiData as any).categories;
 
-    for(const cat of categories) {
-      for(const emoji of cat.emojis) {
+    for (const cat of categories) {
+      for (const emoji of cat.emojis) {
         this.codeToEmoji.set(emoji.code, emoji.emoji);
         this.emojiToCode.set(emoji.emoji, emoji.code);
       }

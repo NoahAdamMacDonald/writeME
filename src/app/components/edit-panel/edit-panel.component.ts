@@ -576,7 +576,7 @@ export class EditPanelComponent {
 
       const divider = '- - - -';
 
-      // Detect if current line or next line is currently 
+      // Detect if current line or next line is currently
       const isCurrentDivider = fullLine.trim() === divider;
 
       const nextLineStart = lineEnd + 1;
@@ -615,5 +615,9 @@ export class EditPanelComponent {
 
       return { newContent, newStart, newEnd };
     });
+  }
+
+  openFoldablePanel() {
+    this.editor.setSidebarTab('foldable');
   }
 }

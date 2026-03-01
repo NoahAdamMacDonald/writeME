@@ -7,19 +7,19 @@
   <div class="tabs">
     <button
       (click)="setTab('file')"
-      [class.active]="activeTab === 'file'">
+      [class.active]="editor.sidebarTab()  === 'file'">
       File
     </button>
 
     <button
       (click)="setTab('edit')"
-      [class.active]="activeTab === 'edit'">
+      [class.active]="editor.sidebarTab() === 'edit'">
       Edit
     </button>
 
     <button
       (click)="setTab('icons')"
-      [class.active]="activeTab === 'icons'">
+      [class.active]="editor.sidebarTab() === 'icons'">
       Emoji
     </button>
   </div>
@@ -38,9 +38,10 @@
   </div>
 
   <div class="panel">
-    <app-file-panel *ngIf="activeTab === 'file'"></app-file-panel>
-    <app-edit-panel *ngIf="activeTab === 'edit'"></app-edit-panel>
-    <app-icon-panel *ngIf="activeTab === 'icons'"></app-icon-panel>
+    <app-file-panel *ngIf="editor.sidebarTab() === 'file'"></app-file-panel>
+    <app-edit-panel *ngIf="editor.sidebarTab() === 'edit'"></app-edit-panel>
+    <app-icon-panel *ngIf="editor.sidebarTab() === 'icons'"></app-icon-panel>
+    <app-foldable-panel *ngIf="editor.sidebarTab() === 'foldable'"></app-foldable-panel>
   </div>
 
 </div>
