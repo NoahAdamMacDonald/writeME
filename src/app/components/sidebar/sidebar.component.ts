@@ -5,6 +5,7 @@ import { FilePanelComponent } from '../file-panel/file-panel.component';
 import { EditPanelComponent } from '../edit-panel/edit-panel.component';
 import { IconPanelComponent } from '../icon-panel/icon-panel.component';
 import { FoldablePanelComponent } from "../sub-panels/foldable-panel/foldable-panel.component";
+import { LinkUrlPanelComponent } from "../sub-panels/link-url-panel/link-url-panel.component";
 
 import { EditorStateService } from '../../services/editor-state.service';
 
@@ -16,7 +17,8 @@ import { EditorStateService } from '../../services/editor-state.service';
     FilePanelComponent,
     EditPanelComponent,
     IconPanelComponent,
-    FoldablePanelComponent
+    FoldablePanelComponent,
+    LinkUrlPanelComponent
 ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',

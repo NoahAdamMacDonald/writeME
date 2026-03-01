@@ -1,0 +1,41 @@
+<div class="link-url-panel">
+
+  <button class="back-btn" (click)="editor.setSidebarTab('edit')">Back</button>
+
+  <div class="section">
+    <label>Link Text</label>
+    <input [(ngModel)]="text" class="text-input" />
+  </div>
+
+  <div class="section">
+    <label>URL</label>
+    <input [(ngModel)]="url" class="text-input" />
+  </div>
+
+  <div class="section actions">
+
+    <button class="danger-btn"
+            *ngIf="editing"
+            (click)="deleteExistingLink()">
+      Delete Link
+    </button>
+
+    <button class="primary-btn"
+            *ngIf="editing"
+            (click)="save()">
+      Save
+    </button>
+
+    <button class="primary-btn"
+            *ngIf="!editing"
+            (click)="insert()">
+      Insert
+    </button>
+
+  </div>
+
+  <div *ngIf="showWarning" class="warning-message">
+    {{ warningMessage }}
+  </div>
+
+</div>

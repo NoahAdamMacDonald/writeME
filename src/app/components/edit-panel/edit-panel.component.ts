@@ -530,6 +530,9 @@ export class EditPanelComponent {
   }
 
   //Link Section
+  openLinkUrlPanel() {
+    this.editor.setSidebarTab('link-url');
+  }
   insertLink() {
     this.applyMarkdownAction((content, start, end) => {
       const selected = content.slice(start, end) || 'link text';
