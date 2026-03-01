@@ -22,13 +22,13 @@ import { EditorStateService } from '../../services/editor-state.service';
   styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
-  activeTab: 'file' | 'edit' | 'icons' | 'foldable' = 'file';
+  activeTab: 'file' | 'edit' | 'icons' = 'file';
 
   //Mobile Warning
   isSmallScreen = false;
   dismissedWarning = false;
 
-  setTab(tab: 'file' | 'edit' | 'icons' | 'foldable') {
+  setTab(tab: 'file' | 'edit' | 'icons') {
     this.editor.setSidebarTab(tab);
     localStorage.setItem('activeTab', tab);
   }
