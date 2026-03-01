@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import emojiData from '../../assets/emoji.json';
+
+
 @Injectable({ providedIn: 'root' })
 export class EditorStateService {
   private contentSubject = new BehaviorSubject<string>('');
+
+  //Map for emoji conversion
+  private codeToEmoji = new Map<string, string>();
+  private emojiToCode = new Map<string, string>();
+
   content$ = this.contentSubject.asObservable();
 
   content = '';
@@ -45,5 +53,34 @@ export class EditorStateService {
     this.setContent(newContent);
     this.selectionStart = newStart;
     this.selectionEnd = newEnd;
+  }
+
+  convertEmojiToCode(text: string) {
+    let result = text;
+
+    for(const [emoji, code] of this.emojiToCode.entries()){
+      result = result.split(emoji).join(code);
+    }
+    return result;
+  }
+
+  convertCodeToEmoji(text: string) {
+    let result = text;
+
+    for(const [code, emoji] of this.codeToEmoji.entries()){
+      result = result.split(code).join(emoji);
+    }
+    return result;
+  }
+
+  constructor() {
+    const categories = (emojiData as any).categories;
+
+    for(const cat of categories) {
+      for(const emoji of cat.emojis) {
+        this.codeToEmoji.set(emoji.code, emoji.emoji);
+        this.emojiToCode.set(emoji.emoji, emoji.code);
+      }
+    }
   }
 }

@@ -75,3 +75,6 @@ Missing
 -Quoting
 -footnote
 
+emoji Testing:
+:grinning::up::exclamation::exclamation::grey_exclamation::grey_exclamation::grey_exclamation::interrobang::bangbang:     :tea:
+
