@@ -170,57 +170,66 @@ export class EditPanelComponent {
    * @example <caption>Set a Note alert to the selected text</caption>
    * <code>setAlert('NOTE')</code>
    */
-setAlert(type: string) {
-  this.applyMarkdownAction((content, start, end) => {
-    const before = content.slice(0, start);
-    const after = content.slice(end);
+  setAlert(type: string) {
+    this.applyMarkdownAction((content, start, end) => {
+      const before = content.slice(0, start);
+      const after = content.slice(end);
 
-    // Expand to full lines
-    const lineStart = before.lastIndexOf('\n') + 1;
-    const lineEndIndex = content.indexOf('\n', end);
-    const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
+      // Expand to full lines
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const lineEndIndex = content.indexOf('\n', end);
+      const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
 
-    const fullBefore = content.slice(0, lineStart);
-    const fullBlock = content.slice(lineStart, lineEnd);
-    const fullAfter = content.slice(lineEnd);
+      const fullBefore = content.slice(0, lineStart);
+      const fullBlock = content.slice(lineStart, lineEnd);
+      const fullAfter = content.slice(lineEnd);
 
-    const lines = fullBlock.split('\n');
+      const lines = fullBlock.split('\n');
 
-    // Detect existing alert
-    const alertRegex = /^>\s*\[!(\w+)\]\s*$/;
-    const firstLine = lines[0].trim();
-    const match = firstLine.match(alertRegex);
-    const existingType = match ? match[1] : null;
+      // Detect existing alert
+      const alertRegex = /^>\s*\[!(\w+)\]\s*$/;
+      const firstLine = lines[0].trim();
+      const match = firstLine.match(alertRegex);
+      const existingType = match ? match[1] : null;
 
-    const isQuote = lines.every(line => /^\s*>\s?/.test(line));
+      const isQuote = lines.every((line) => /^\s*>\s?/.test(line));
 
-    // QUOTE unique case
-    if (type === 'QUOTE') {
+      // QUOTE unique case
+      if (type === 'QUOTE') {
+        // If already a quote → remove it
+        if (isQuote && !existingType) {
+          const withoutQuote = lines
+            .map((line) => line.replace(/^\s*>\s?/, ''))
+            .join('\n');
 
-      // If already a quote → remove it
-      if (isQuote && !existingType) {
-        const withoutQuote = lines
-          .map(line => line.replace(/^\s*>\s?/, ''))
-          .join('\n');
+          const newContent = fullBefore + withoutQuote + fullAfter;
+          const newStart = lineStart;
+          const newEnd = lineStart + withoutQuote.length;
 
-        const newContent = fullBefore + withoutQuote + fullAfter;
-        const newStart = lineStart;
-        const newEnd = lineStart + withoutQuote.length;
+          return { newContent, newStart, newEnd };
+        }
 
-        return { newContent, newStart, newEnd };
-      }
+        // If it's an alert : replace alert with quote
+        if (existingType) {
+          const withoutAlert = lines
+            .slice(1)
+            .map((line) => line.replace(/^>\s?/, ''))
+            .join('\n');
 
-      // If it's an alert : replace alert with quote
-      if (existingType) {
-        const withoutAlert = lines
-          .slice(1)
-          .map(line => line.replace(/^>\s?/, ''))
-          .join('\n');
+          const quoted = withoutAlert
+            .split('\n')
+            .map((line) => `> ${line}`)
+            .join('\n');
 
-        const quoted = withoutAlert
-          .split('\n')
-          .map(line => `> ${line}`)
-          .join('\n');
+          const newContent = fullBefore + quoted + fullAfter;
+          const newStart = lineStart;
+          const newEnd = lineStart + quoted.length;
+
+          return { newContent, newStart, newEnd };
+        }
+
+        // Apply quote to plain text
+        const quoted = lines.map((line) => `> ${line}`).join('\n');
 
         const newContent = fullBefore + quoted + fullAfter;
         const newStart = lineStart;
@@ -229,257 +238,274 @@ setAlert(type: string) {
         return { newContent, newStart, newEnd };
       }
 
-      // Apply quote to plain text
-      const quoted = lines.map(line => `> ${line}`).join('\n');
+      // Alerts
 
-      const newContent = fullBefore + quoted + fullAfter;
-      const newStart = lineStart;
-      const newEnd = lineStart + quoted.length;
+      // If the Same alert : remove it and exit function
+      if (existingType && existingType.toUpperCase() === type.toUpperCase()) {
+        const withoutAlert = lines
+          .slice(1) // remove the first line (the alert header)
+          .map((line) => line.replace(/^>\s?/, '')) // remove leading "> "
+          .join('\n');
 
-      return { newContent, newStart, newEnd };
-    }
+        const newContent = fullBefore + withoutAlert + fullAfter;
+        const newStart = lineStart;
+        const newEnd = lineStart + withoutAlert.length;
 
-    // Alerts
+        return { newContent, newStart, newEnd };
+      }
 
-    // If the Same alert : remove it and exit function
-    if (existingType && existingType.toUpperCase() === type.toUpperCase()) {
-      const withoutAlert = lines
-        .slice(1) // remove the first line (the alert header)
-        .map((line) => line.replace(/^>\s?/, '')) // remove leading "> "
-        .join('\n');
+      // Replace quote with alert
+      if (isQuote && !existingType) {
+        const unquoted = lines.map((line) => line.replace(/^\s*>\s?/, ''));
 
-      const newContent = fullBefore + withoutAlert + fullAfter;
-      const newStart = lineStart;
-      const newEnd = lineStart + withoutAlert.length;
+        const block = [
+          `> [!${type}]`,
+          ...unquoted.map((line) => `> ${line}`),
+        ].join('\n');
 
-      return { newContent, newStart, newEnd };
-    }
+        const newContent = fullBefore + block + fullAfter;
+        const newStart = lineStart;
+        const newEnd = lineStart + block.length;
 
-    // Replace quote with alert
-    if (isQuote && !existingType) {
-      const unquoted = lines.map(line => line.replace(/^\s*>\s?/, ''));
+        return { newContent, newStart, newEnd };
+      }
 
-      const block = [
-        `> [!${type}]`,
-        ...unquoted.map(line => `> ${line}`)
-      ].join('\n');
+      // Replace existing alert and apply new one
+      if (existingType) {
+        const replaced = [`> [!${type}]`, ...lines.slice(1)].join('\n');
+
+        const newContent = fullBefore + replaced + fullAfter;
+        const newStart = lineStart;
+        const newEnd = lineStart + replaced.length;
+
+        return { newContent, newStart, newEnd };
+      }
+
+      // Apply new alert if none exists
+      const block = [`> [!${type}]`, ...lines.map((line) => `> ${line}`)].join(
+        '\n',
+      );
 
       const newContent = fullBefore + block + fullAfter;
       const newStart = lineStart;
       const newEnd = lineStart + block.length;
 
       return { newContent, newStart, newEnd };
-    }
-
-    // Replace existing alert and apply new one
-    if (existingType) {
-      const replaced = [
-        `> [!${type}]`,
-        ...lines.slice(1),
-      ].join('\n');
-
-      const newContent = fullBefore + replaced + fullAfter;
-      const newStart = lineStart;
-      const newEnd = lineStart + replaced.length;
-
-      return { newContent, newStart, newEnd };
-    }
-
-    // Apply new alert if none exists
-    const block = [`> [!${type}]`, ...lines.map((line) => `> ${line}`)].join(
-      '\n',
-    );
-
-    const newContent = fullBefore + block + fullAfter;
-    const newStart = lineStart;
-    const newEnd = lineStart + block.length;
-
-    return { newContent, newStart, newEnd };
-  });
-}
-
-/**
- * CAUTION: Regex nightmare ahead, you have been warned
- *
- * Applies a markdown list to the selected text.
- *
- * If the selected text contains a line, this function will apply the
- * list to the line. If the selected text contains a block of text,
- * this function will apply the list to the block of text.
- *
- * This function will detect the current list type from the first line of
- * the block, and will toggle the list type if the new list type is
- * the same as the current list type.
- *
- * @param prefix The prefix of the list to apply. Can be:
- *   - `[ ]` for a task list
- *   - `-` for an unordered list
- *   - `<number>.` for an ordered list
- *   - `none` to remove the list
- *
- * @example <caption>Apply an unordered list to the selected text</caption>
- * <code>setList('-')</code>
- * @example <caption>Apply an ordered list to the selected text</caption>
- * <code>setList('1.')</code>
- * @example <caption>Apply a task list to the selected text</caption>
- * <code>setList('- [ ]')</code>
- * @example <caption>Remove the list from the selected text</caption>
- * <code>setList('none')</code>
- */
-  setList(prefix: string) {
-  this.applyMarkdownAction((content, start, end) => {
-    const before = content.slice(0, start);
-    const after = content.slice(end);
-
-    // Expand to full lines
-    const lineStart = before.lastIndexOf('\n') + 1;
-    const lineEndIndex = content.indexOf('\n', end);
-    const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
-
-    const fullBefore = content.slice(0, lineStart);
-    const fullBlock = content.slice(lineStart, lineEnd);
-    const fullAfter = content.slice(lineEnd);
-
-    const rawLines = fullBlock.split('\n');
-
-    // Regex nightmare to detect current list type without also detecting task for unordered list
-    const taskRegex = /^(\s*)-\s\[( |x|X)\]\s+(.*)$/;
-    const orderedRegex = /^(\s*)(\d+)\.\s+(.*)$/;
-    const unorderedRegex = /^(\s*)-\s(?!\[( |x|X)\])(.*)$/;
-
-    // Parse lines into structured objects
-    const lines = rawLines.map(line => {
-      let m;
-
-      // Task list
-      if ((m = line.match(taskRegex))) {
-        return {
-          indent: m[1].length,
-          type: m[2].trim().toLowerCase() === 'x' ? 'task-checked' : 'task-unchecked',
-          content: m[3]
-        };
-      }
-
-      // Ordered list
-      if ((m = line.match(orderedRegex))) {
-        return {
-          indent: m[1].length,
-          type: 'ordered',
-          content: m[3]
-        };
-      }
-
-      // Unordered list
-      if ((m = line.match(unorderedRegex))) {
-        return {
-          indent: m[1].length,
-          type: 'unordered',
-          content: m[3]
-        };
-      }
-
-      // Plain text
-      const indent = line.match(/^(\s*)/)![1].length;
-      return {
-        indent,
-        type: 'none',
-        content: line.trim()
-      };
     });
+  }
 
-    // Detect current type from first line
-    const currentType = lines[0].type;
+  /**
+   * CAUTION: Regex nightmare ahead, you have been warned
+   *
+   * Applies a markdown list to the selected text.
+   *
+   * If the selected text contains a line, this function will apply the
+   * list to the line. If the selected text contains a block of text,
+   * this function will apply the list to the block of text.
+   *
+   * This function will detect the current list type from the first line of
+   * the block, and will toggle the list type if the new list type is
+   * the same as the current list type.
+   *
+   * @param prefix The prefix of the list to apply. Can be:
+   *   - `[ ]` for a task list
+   *   - `-` for an unordered list
+   *   - `<number>.` for an ordered list
+   *   - `none` to remove the list
+   *
+   * @example <caption>Apply an unordered list to the selected text</caption>
+   * <code>setList('-')</code>
+   * @example <caption>Apply an ordered list to the selected text</caption>
+   * <code>setList('1.')</code>
+   * @example <caption>Apply a task list to the selected text</caption>
+   * <code>setList('- [ ]')</code>
+   * @example <caption>Remove the list from the selected text</caption>
+   * <code>setList('none')</code>
+   */
+  setList(prefix: string) {
+    this.applyMarkdownAction((content, start, end) => {
+      const before = content.slice(0, start);
+      const after = content.slice(end);
 
-    // Detect current prefix
-    const trimmedPrefix = prefix.trim();
-    const applyingTask = /^-\s\[( |x|X)\]/.test(trimmedPrefix);
-    const applyingUnordered = trimmedPrefix === '-';
-    const applyingOrdered = /^\d+\.$/.test(trimmedPrefix);
+      // Expand to full lines
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const lineEndIndex = content.indexOf('\n', end);
+      const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
 
-    const desiredType = applyingTask
-      ? 'task'
-      : applyingOrdered
-        ? 'ordered'
-        : applyingUnordered
-          ? 'unordered'
-          : 'none';
+      const fullBefore = content.slice(0, lineStart);
+      const fullBlock = content.slice(lineStart, lineEnd);
+      const fullAfter = content.slice(lineEnd);
 
-    // strip all prefixes
-    const stripAllPrefixes = (line: { indent: number; content: string }) =>
-      `${' '.repeat(line.indent)}${line.content}`;
+      const rawLines = fullBlock.split('\n');
 
-    // TASK LOGIC
-    if (desiredType === 'task') {
-      // Toggle unchecked → checked
-      if (currentType === 'task-unchecked') {
-        const toggled = lines
-          .map(l => `${' '.repeat(l.indent)}- [x] ${l.content}`)
+      // Regex nightmare to detect current list type without also detecting task for unordered list
+      const taskRegex = /^(\s*)-\s\[( |x|X)\]\s+(.*)$/;
+      const orderedRegex = /^(\s*)(\d+)\.\s+(.*)$/;
+      const unorderedRegex = /^(\s*)-\s(?!\[( |x|X)\])(.*)$/;
+
+      // Parse lines into structured objects
+      const lines = rawLines.map((line) => {
+        let m;
+
+        // Task list
+        if ((m = line.match(taskRegex))) {
+          return {
+            indent: m[1].length,
+            type:
+              m[2].trim().toLowerCase() === 'x'
+                ? 'task-checked'
+                : 'task-unchecked',
+            content: m[3],
+          };
+        }
+
+        // Ordered list
+        if ((m = line.match(orderedRegex))) {
+          return {
+            indent: m[1].length,
+            type: 'ordered',
+            content: m[3],
+          };
+        }
+
+        // Unordered list
+        if ((m = line.match(unorderedRegex))) {
+          return {
+            indent: m[1].length,
+            type: 'unordered',
+            content: m[3],
+          };
+        }
+
+        // Plain text
+        const indent = line.match(/^(\s*)/)![1].length;
+        return {
+          indent,
+          type: 'none',
+          content: line.trim(),
+        };
+      });
+
+      // Detect current type from first line
+      const currentType = lines[0].type;
+
+      // Detect current prefix
+      const trimmedPrefix = prefix.trim();
+      const applyingTask = /^-\s\[( |x|X)\]/.test(trimmedPrefix);
+      const applyingUnordered = trimmedPrefix === '-';
+      const applyingOrdered = /^\d+\.$/.test(trimmedPrefix);
+
+      const desiredType = applyingTask
+        ? 'task'
+        : applyingOrdered
+          ? 'ordered'
+          : applyingUnordered
+            ? 'unordered'
+            : 'none';
+
+      // strip all prefixes
+      const stripAllPrefixes = (line: { indent: number; content: string }) =>
+        `${' '.repeat(line.indent)}${line.content}`;
+
+      // TASK LOGIC
+      if (desiredType === 'task') {
+        // Toggle unchecked → checked
+        if (currentType === 'task-unchecked') {
+          const toggled = lines
+            .map((l) => `${' '.repeat(l.indent)}- [x] ${l.content}`)
+            .join('\n');
+
+          return {
+            newContent: fullBefore + toggled + fullAfter,
+            newStart: lineStart,
+            newEnd: lineStart + toggled.length,
+          };
+        }
+
+        // Toggle checked to remove list
+        if (currentType === 'task-checked') {
+          const removed = lines.map(stripAllPrefixes).join('\n');
+
+          return {
+            newContent: fullBefore + removed + fullAfter,
+            newStart: lineStart,
+            newEnd: lineStart + removed.length,
+          };
+        }
+
+        // Convert unordered / ordered to task
+        if (currentType === 'unordered' || currentType === 'ordered') {
+          const converted = lines
+            .map((l) => `${' '.repeat(l.indent)}- [ ] ${l.content}`)
+            .join('\n');
+
+          return {
+            newContent: fullBefore + converted + fullAfter,
+            newStart: lineStart,
+            newEnd: lineStart + converted.length,
+          };
+        }
+
+        // Apply task to plain text
+        const applied = lines
+          .map((l) => `${' '.repeat(l.indent)}- [ ] ${l.content}`)
           .join('\n');
 
         return {
-          newContent: fullBefore + toggled + fullAfter,
+          newContent: fullBefore + applied + fullAfter,
           newStart: lineStart,
-          newEnd: lineStart + toggled.length
+          newEnd: lineStart + applied.length,
         };
       }
 
-      // Toggle checked to remove list
-      if (currentType === 'task-checked') {
+      // UNORDERED / ORDERED LOGIC
+      // Toggle off same type
+      if (
+        (desiredType === 'unordered' && currentType === 'unordered') ||
+        (desiredType === 'ordered' && currentType === 'ordered')
+      ) {
         const removed = lines.map(stripAllPrefixes).join('\n');
 
         return {
           newContent: fullBefore + removed + fullAfter,
           newStart: lineStart,
-          newEnd: lineStart + removed.length
+          newEnd: lineStart + removed.length,
         };
       }
 
-      // Convert unordered / ordered to task
-      if (currentType === 'unordered' || currentType === 'ordered') {
-        const converted = lines
-          .map(l => `${' '.repeat(l.indent)}- [ ] ${l.content}`)
+      // Replace existing list with new type
+      if (currentType !== 'none') {
+        const counters: Record<number, number> = {};
+
+        const replaced = lines
+          .map((l) => {
+            const indent = l.indent;
+
+            if (desiredType === 'ordered') {
+              counters[indent] = (counters[indent] || 0) + 1;
+              return `${' '.repeat(indent)}${counters[indent]}. ${l.content}`;
+            }
+
+            if (desiredType === 'unordered') {
+              return `${' '.repeat(indent)}- ${l.content}`;
+            }
+
+            return `${' '.repeat(indent)}${l.content}`;
+          })
           .join('\n');
 
         return {
-          newContent: fullBefore + converted + fullAfter,
+          newContent: fullBefore + replaced + fullAfter,
           newStart: lineStart,
-          newEnd: lineStart + converted.length
+          newEnd: lineStart + replaced.length,
         };
       }
 
-      // Apply task to plain text
-      const applied = lines
-        .map(l => `${' '.repeat(l.indent)}- [ ] ${l.content}`)
-        .join('\n');
-
-      return {
-        newContent: fullBefore + applied + fullAfter,
-        newStart: lineStart,
-        newEnd: lineStart + applied.length
-      };
-    }
-
-    // UNORDERED / ORDERED LOGIC
-    // Toggle off same type
-    if (
-      (desiredType === 'unordered' && currentType === 'unordered') ||
-      (desiredType === 'ordered' && currentType === 'ordered')
-    ) {
-      const removed = lines.map(stripAllPrefixes).join('\n');
-
-      return {
-        newContent: fullBefore + removed + fullAfter,
-        newStart: lineStart,
-        newEnd: lineStart + removed.length
-      };
-    }
-
-    // Replace existing list with new type
-    if (currentType !== 'none') {
+      // Apply new list to plain text
       const counters: Record<number, number> = {};
 
-      const replaced = lines
-        .map(l => {
+      const applied = lines
+        .map((l) => {
           const indent = l.indent;
 
           if (desiredType === 'ordered') {
@@ -496,39 +522,12 @@ setAlert(type: string) {
         .join('\n');
 
       return {
-        newContent: fullBefore + replaced + fullAfter,
+        newContent: fullBefore + applied + fullAfter,
         newStart: lineStart,
-        newEnd: lineStart + replaced.length
+        newEnd: lineStart + applied.length,
       };
-    }
-
-    // Apply new list to plain text
-    const counters: Record<number, number> = {};
-
-    const applied = lines
-      .map(l => {
-        const indent = l.indent;
-
-        if (desiredType === 'ordered') {
-          counters[indent] = (counters[indent] || 0) + 1;
-          return `${' '.repeat(indent)}${counters[indent]}. ${l.content}`;
-        }
-
-        if (desiredType === 'unordered') {
-          return `${' '.repeat(indent)}- ${l.content}`;
-        }
-
-        return `${' '.repeat(indent)}${l.content}`;
-      })
-      .join('\n');
-
-    return {
-      newContent: fullBefore + applied + fullAfter,
-      newStart: lineStart,
-      newEnd: lineStart + applied.length
-    };
-  });
-}
+    });
+  }
 
   //Link Section
   insertLink() {
@@ -560,7 +559,61 @@ setAlert(type: string) {
     });
   }
 
-
   //Misc Section
+  insertDivider() {
+    this.applyMarkdownAction((content, start, end) => {
+      const before = content.slice(0, start);
+      const after = content.slice(end);
 
+      // Expand to full line
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const lineEndIndex = content.indexOf('\n', end);
+      const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
+
+      const fullBefore = content.slice(0, lineStart);
+      const fullLine = content.slice(lineStart, lineEnd);
+      const fullAfter = content.slice(lineEnd);
+
+      const divider = '- - - -';
+
+      // Detect if current line or next line is currently 
+      const isCurrentDivider = fullLine.trim() === divider;
+
+      const nextLineStart = lineEnd + 1;
+      const nextLineEndIndex = content.indexOf('\n', nextLineStart);
+      const nextLineEnd =
+        nextLineEndIndex === -1 ? content.length : nextLineEndIndex;
+      const nextLine = content.slice(nextLineStart, nextLineEnd).trim();
+      const isNextDivider = nextLine === divider;
+
+      // If current line is divider : remove it
+      if (isCurrentDivider) {
+        const newContent = fullBefore + fullAfter.replace(/^\n?/, '');
+        const newStart = lineStart;
+        const newEnd = newStart;
+        return { newContent, newStart, newEnd };
+      }
+
+      // If next line is divider : remove it
+      if (isNextDivider) {
+        const afterWithoutNext =
+          content.slice(0, nextLineStart) + content.slice(nextLineEnd + 1);
+
+        const newContent = afterWithoutNext;
+        const newStart = start;
+        const newEnd = start;
+        return { newContent, newStart, newEnd };
+      }
+
+      //insert divider on new line
+      const block = `\n${divider}\n`;
+      const newContent = fullBefore + fullLine + block + fullAfter;
+
+      // moves cursor to next line
+      const newStart = lineEnd + block.length;
+      const newEnd = newStart;
+
+      return { newContent, newStart, newEnd };
+    });
+  }
 }
