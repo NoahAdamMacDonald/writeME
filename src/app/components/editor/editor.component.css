@@ -11,6 +11,7 @@
   background: var(--bg-line-numbers);
   color: var(--editor-line-number);
   padding: 8px 0;
+  padding-bottom: 200px;
   overflow: hidden;
   user-select: none;
   text-align: right;
@@ -29,8 +30,16 @@
   color: var(--text-accent);
 }
 
-.editor-input {
+.editor-area {
   flex: 1;
+  overflow: auto;
+  position: relative;
+  padding-bottom: 200px;
+}
+
+.editor-input {
+  width: 100%;
+  height: 100%;
   background: var(--bg-main);
   color: var(--text-primary);
   border: none;
@@ -40,6 +49,6 @@
   font-family: monospace;
   font-size: 14px;
   line-height: 20px;
-  overflow: auto;
   white-space: pre;
+  box-sizing: border-box;
 }

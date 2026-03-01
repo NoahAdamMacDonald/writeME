@@ -6,14 +6,16 @@
     </div>
   </div>
 
-  <textarea
-    #textarea
-    class="editor-input"
-    [(ngModel)]="content"
-    (input)="onInput($event)"
-    (click)="onClick($event)"
-    (keyup)="onKeyUp($event)"
-    (scroll)="syncScroll($event)"
-    (keydown)="onKeyDown($event)"
-  ></textarea>
+  <div class="editor-area">
+    <textarea
+      #textarea
+      class="editor-input"
+      [(ngModel)]="content"
+      (input)="onInput($event)"
+      (click)="onClick($event)"
+      (keyup)="onKeyUp($event)"
+      (scroll)="syncScroll($event)"
+      (keydown)="onKeyDown($event)"
+    ></textarea>
+  </div>
 </div>
