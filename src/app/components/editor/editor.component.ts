@@ -86,13 +86,21 @@ export class EditorComponent implements OnInit {
     this.updateSelection(event);
   }
 
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Tab') {
+      this.handleTabs(event);
+    }
+  }
+
   syncScroll(event: any) {
-    const ta = event.target as HTMLTextAreaElement;
+    const ta = event.target as HTMLElement;
     const lineNumbers = document.querySelector('.line-numbers') as HTMLElement;
     if (lineNumbers) {
       lineNumbers.scrollTop = ta.scrollTop;
     }
   }
+
+
 
   handleTabs(event: KeyboardEvent) {
     const ta = event.target as HTMLTextAreaElement;
@@ -140,10 +148,5 @@ export class EditorComponent implements OnInit {
     localStorage.setItem('editorContent', this.content);
     this.editorState.updateSelection(start + 4, start + 4);
   }
-
-  onKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Tab') {
-      this.handleTabs(event);
-    }
-  }
 }
+
