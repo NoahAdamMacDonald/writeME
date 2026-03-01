@@ -18,6 +18,9 @@
 }
 
 .back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0.5rem 0.75rem;
   background: var(--btn-bg);
   color: var(--btn-text);
@@ -30,6 +33,12 @@
 
 .back-btn:hover {
   background: var(--btn-hover);
+}
+
+.back-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
 }
 
 .section-label {

@@ -1,6 +1,17 @@
 <div class="link-section-panel">
 
-  <button class="back-btn" (click)="editor.setSidebarTab('edit')">Back</button>
+  <button class="back-btn" (click)="editor.setSidebarTab('edit')">
+    <svg class="back-icon" viewBox="0 0 24 24">
+      <path d="M15 6l-6 6 6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+    </svg>
+    Back
+  </button>
+
 
   <div class="section">
     <label class="section-label">Link Text</label>
