@@ -20,7 +20,7 @@
         type="button"
         class="language-item"
         *ngFor="let lang of languages"
-        (click)="language = lang"
+        (click)="language = lang; updateHighlight()"
         [class.selected]="language === lang">
         {{ lang }}
       </button>
@@ -29,16 +29,22 @@
 
   <div class="section">
     <label class="section-label">Code</label>
-    <textarea
-      class="code-input"
-      [(ngModel)]="code"
-      (keydown)="handleKey($event)"
-    ></textarea>
+
+    <div class="code-editor">
+      <pre class="highlight-layer hljs" [innerHTML]="highlightedCode"></pre>
+
+      <textarea
+        class="code-input"
+        [(ngModel)]="code"
+        (input)="updateHighlight()"
+        (keydown)="handleKey($event)"
+        (scroll)="syncScroll($event)"
+      ></textarea>
+    </div>
   </div>
 
   <div class="section actions">
-
-    <!-- Existing block -->
+    <!--Existing Block-->
     <button class="danger-btn"
             *ngIf="editing"
             (click)="deleteExistingBlock()">
@@ -51,7 +57,7 @@
       Save
     </button>
 
-    <!-- New block -->
+    <!--New Block-->
     <button class="primary-btn"
             *ngIf="!editing"
             (click)="insert()">

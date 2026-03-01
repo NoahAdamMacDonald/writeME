@@ -1,3 +1,6 @@
+@import 'highlight.js/styles/github-dark.css';
+
+
 :root {
   --brand-bg: #910808;
   --bg-main: #1b1b1b;
@@ -32,3 +35,4 @@
 *::-webkit-scrollbar-thumb:hover {
   background-color: var(--btn-bg);
 }
+

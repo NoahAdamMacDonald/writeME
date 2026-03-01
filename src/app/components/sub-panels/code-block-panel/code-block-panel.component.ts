@@ -6,6 +6,7 @@ import { EditorStateService } from '../../../services/editor-state.service';
 import { TextEditingService } from '../../../services/text-editing.service';
 
 import languageData from '../../../../assets/languages.json';
+import hljs from 'highlight.js/lib/common';
 
 @Component({
   selector: 'app-code-block-panel',
@@ -20,6 +21,7 @@ export class CodeBlockPanelComponent implements OnInit {
 
   language = 'plaintext';
   code = '';
+  highlightedCode = '';
 
   editing = false;
   originalStart = 0;
@@ -60,6 +62,30 @@ ${fence}
 `;
   }
 
+  updateHighlight() {
+    const lang = this.language || 'plaintext';
+
+    try {
+      if (hljs.getLanguage(lang)) {
+        this.highlightedCode = hljs.highlight(this.code, {
+          language: lang,
+        }).value;
+      } else {
+        this.highlightedCode = hljs.highlightAuto(this.code).value;
+      }
+    } catch {
+      this.highlightedCode = this.code;
+    }
+  }
+
+  syncScroll(event: any) {
+    const ta = event.target as HTMLTextAreaElement;
+    const pre = ta.previousElementSibling as HTMLElement;
+
+    pre.scrollTop = ta.scrollTop;
+    pre.scrollLeft = ta.scrollLeft;
+  }
+
   insert() {
     if (!this.validate()) return;
 
@@ -72,9 +98,8 @@ ${fence}
 
       const newContent = content.slice(0, start) + block + content.slice(end);
       const newStart = start + block.length;
-      const newEnd = newStart;
 
-      return { newContent, newStart, newEnd };
+      return { newContent, newStart, newEnd: newStart };
     });
 
     this.editor.setSidebarTab('edit');
@@ -100,6 +125,8 @@ ${fence}
     this.editing = true;
     this.originalStart = startFence;
     this.originalEnd = endFence + 3;
+
+    this.updateHighlight();
   }
 
   save() {
@@ -116,9 +143,8 @@ ${fence}
         content.slice(this.originalEnd);
 
       const newStart = this.originalStart + block.length;
-      const newEnd = newStart;
 
-      return { newContent, newStart, newEnd };
+      return { newContent, newStart, newEnd: newStart };
     });
 
     this.editor.setSidebarTab('edit');
@@ -141,7 +167,7 @@ ${fence}
     this.editor.setSidebarTab('edit');
   }
 
-  // Editing functions
+  // Edit Functions
   handleKey(event: KeyboardEvent) {
     const ta = event.target as HTMLTextAreaElement;
     const start = ta.selectionStart;
@@ -155,6 +181,7 @@ ${fence}
         : this.textEdit.handleTab(this.code, start, end);
 
       this.code = result.content;
+      this.updateHighlight();
 
       setTimeout(() => {
         ta.selectionStart = ta.selectionEnd = result.cursor;
@@ -174,6 +201,7 @@ ${fence}
       );
 
       this.code = result.content;
+      this.updateHighlight();
 
       setTimeout(() => {
         ta.selectionStart = ta.selectionEnd = result.cursor;
@@ -188,6 +216,7 @@ ${fence}
       if (result.content !== this.code) {
         event.preventDefault();
         this.code = result.content;
+        this.updateHighlight();
 
         setTimeout(() => {
           ta.selectionStart = ta.selectionEnd = result.cursor;
@@ -197,6 +226,8 @@ ${fence}
   }
 
   ngOnInit() {
+    console.log('python:', hljs.getLanguage('python'));
     this.loadExistingCodeBlock();
+    this.updateHighlight();
   }
 }
