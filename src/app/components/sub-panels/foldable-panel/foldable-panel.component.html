@@ -23,8 +23,14 @@
   </div>
 
   <div class="section actions">
-    <button class="danger-btn" (click)="deleteAll()">Delete Foldable</button>
-    <button class="primary-btn" (click)="insert()">Insert</button>
+    <!--New Block-->
+    <button class="danger-btn" *ngIf="!editing" (click)="deleteAll()">Delete Foldable</button>
+    <button class="primary-btn" *ngIf="!editing" (click)="insert()">Insert</button>
+
+    <!--Existing Block-->
+    <button class="primary-btn" *ngIf="editing" (click)="save()">Save</button>
+    <button class="danger-btn" *ngIf="editing" (click)="deleteExistingBlock()">Delete</button>
+
     <button class="secondary-btn" (click)="copyToClipboard()">Copy to Clipboard</button>
   </div>
 
