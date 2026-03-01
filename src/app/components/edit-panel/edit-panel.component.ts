@@ -233,163 +233,237 @@ export class EditPanelComponent {
     });
   }
 
+/**
+ * CAUTION: Regex nightmare ahead, you have been warned
+ *
+ * Applies a markdown list to the selected text.
+ *
+ * If the selected text contains a line, this function will apply the
+ * list to the line. If the selected text contains a block of text,
+ * this function will apply the list to the block of text.
+ *
+ * This function will detect the current list type from the first line of
+ * the block, and will toggle the list type if the new list type is
+ * the same as the current list type.
+ *
+ * @param prefix The prefix of the list to apply. Can be:
+ *   - `[ ]` for a task list
+ *   - `-` for an unordered list
+ *   - `<number>.` for an ordered list
+ *   - `none` to remove the list
+ *
+ * @example <caption>Apply an unordered list to the selected text</caption>
+ * <code>setList('-')</code>
+ * @example <caption>Apply an ordered list to the selected text</caption>
+ * <code>setList('1.')</code>
+ * @example <caption>Apply a task list to the selected text</caption>
+ * <code>setList('- [ ]')</code>
+ * @example <caption>Remove the list from the selected text</caption>
+ * <code>setList('none')</code>
+ */
   setList(prefix: string) {
-    this.applyMarkdownAction((content, start, end) => {
-      const before = content.slice(0, start);
-      const after = content.slice(end);
+  this.applyMarkdownAction((content, start, end) => {
+    const before = content.slice(0, start);
+    const after = content.slice(end);
 
-      // Expand to full lines
-      const lineStart = before.lastIndexOf('\n') + 1;
-      const lineEndIndex = content.indexOf('\n', end);
-      const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
+    // Expand to full lines
+    const lineStart = before.lastIndexOf('\n') + 1;
+    const lineEndIndex = content.indexOf('\n', end);
+    const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
 
-      const fullBefore = content.slice(0, lineStart);
-      const fullBlock = content.slice(lineStart, lineEnd);
-      const fullAfter = content.slice(lineEnd);
+    const fullBefore = content.slice(0, lineStart);
+    const fullBlock = content.slice(lineStart, lineEnd);
+    const fullAfter = content.slice(lineEnd);
 
-      const lines = fullBlock.split('\n');
+    const rawLines = fullBlock.split('\n');
 
-      // Regex nightmare to detect current list type without also detecting task for unordered list
-      const taskRegex = /^\s*-\s\[( |x|X)\]\s+/;
-      const orderedRegex = /^\s*\d+\.\s+/;
-      const unorderedRegex = /^\s*-\s(?!\[( |x|X)\])|^\s*[*+]\s+/;
+    // Regex nightmare to detect current list type without also detecting task for unordered list
+    const taskRegex = /^(\s*)-\s\[( |x|X)\]\s+(.*)$/;
+    const orderedRegex = /^(\s*)(\d+)\.\s+(.*)$/;
+    const unorderedRegex = /^(\s*)-\s(?!\[( |x|X)\])(.*)$/;
 
-      const first = lines[0];
+    // Parse lines into structured objects
+    const lines = rawLines.map(line => {
+      let m;
 
-      // Detect current type
-      const taskMatch = first.match(taskRegex);
-      const isTask = !!taskMatch;
-      const isTaskChecked = taskMatch ? /x/i.test(taskMatch[1]) : false;
-
-      const isOrdered = !isTask && orderedRegex.test(first);
-      const isUnordered = !isTask && !isOrdered && unorderedRegex.test(first);
-
-      const currentType = isTask
-        ? isTaskChecked
-          ? 'task-checked'
-          : 'task-unchecked'
-        : isOrdered
-          ? 'ordered'
-          : isUnordered
-            ? 'unordered'
-            : 'none';
-
-      // Detect current prefix
-      const trimmedPrefix = prefix.trim();
-      const applyingTask = /^-\s\[( |x|X)\]/.test(trimmedPrefix);
-      const applyingUnordered = trimmedPrefix === '-';
-      const applyingOrdered = /^\d+\.$/.test(trimmedPrefix);
-
-      const desiredType = applyingTask
-        ? 'task'
-        : applyingOrdered
-          ? 'ordered'
-          : applyingUnordered
-            ? 'unordered'
-            : 'none';
-
-      const stripAllPrefixes = (line: string) =>
-        line
-          .replace(taskRegex, '')
-          .replace(orderedRegex, '')
-          .replace(unorderedRegex, '');
-
-      // TASK LOGIC
-      if (desiredType === 'task') {
-        if (currentType === 'task-unchecked') {
-          const toggled = lines
-            .map((line) => line.replace(/^\s*-\s\[\s\]\s+/, '- [x] '))
-            .join('\n');
-
-          return {
-            newContent: fullBefore + toggled + fullAfter,
-            newStart: lineStart,
-            newEnd: lineStart + toggled.length,
-          };
-        }
-
-        if (currentType === 'task-checked') {
-          const removed = lines.map(stripAllPrefixes).join('\n');
-
-          return {
-            newContent: fullBefore + removed + fullAfter,
-            newStart: lineStart,
-            newEnd: lineStart + removed.length,
-          };
-        }
-
-        if (currentType === 'unordered' || currentType === 'ordered') {
-          const converted = lines
-            .map((line) => `- [ ] ${stripAllPrefixes(line)}`)
-            .join('\n');
-
-          return {
-            newContent: fullBefore + converted + fullAfter,
-            newStart: lineStart,
-            newEnd: lineStart + converted.length,
-          };
-        }
-        const applied = lines.map((line) => `- [ ] ${line}`).join('\n');
-
+      // Task list
+      if ((m = line.match(taskRegex))) {
         return {
-          newContent: fullBefore + applied + fullAfter,
-          newStart: lineStart,
-          newEnd: lineStart + applied.length,
+          indent: m[1].length,
+          type: m[2].trim().toLowerCase() === 'x' ? 'task-checked' : 'task-unchecked',
+          content: m[3]
         };
       }
 
-      // UNORDERED / ORDERED LOGIC
-      if (
-        (desiredType === 'unordered' && currentType === 'unordered') ||
-        (desiredType === 'ordered' && currentType === 'ordered')
-      ) {
+      // Ordered list
+      if ((m = line.match(orderedRegex))) {
+        return {
+          indent: m[1].length,
+          type: 'ordered',
+          content: m[3]
+        };
+      }
+
+      // Unordered list
+      if ((m = line.match(unorderedRegex))) {
+        return {
+          indent: m[1].length,
+          type: 'unordered',
+          content: m[3]
+        };
+      }
+
+      // Plain text
+      const indent = line.match(/^(\s*)/)![1].length;
+      return {
+        indent,
+        type: 'none',
+        content: line.trim()
+      };
+    });
+
+    // Detect current type from first line
+    const currentType = lines[0].type;
+
+    // Detect current prefix
+    const trimmedPrefix = prefix.trim();
+    const applyingTask = /^-\s\[( |x|X)\]/.test(trimmedPrefix);
+    const applyingUnordered = trimmedPrefix === '-';
+    const applyingOrdered = /^\d+\.$/.test(trimmedPrefix);
+
+    const desiredType = applyingTask
+      ? 'task'
+      : applyingOrdered
+        ? 'ordered'
+        : applyingUnordered
+          ? 'unordered'
+          : 'none';
+
+    // strip all prefixes
+    const stripAllPrefixes = (line: { indent: number; content: string }) =>
+      `${' '.repeat(line.indent)}${line.content}`;
+
+    // TASK LOGIC
+    if (desiredType === 'task') {
+      // Toggle unchecked → checked
+      if (currentType === 'task-unchecked') {
+        const toggled = lines
+          .map(l => `${' '.repeat(l.indent)}- [x] ${l.content}`)
+          .join('\n');
+
+        return {
+          newContent: fullBefore + toggled + fullAfter,
+          newStart: lineStart,
+          newEnd: lineStart + toggled.length
+        };
+      }
+
+      // Toggle checked to remove list
+      if (currentType === 'task-checked') {
         const removed = lines.map(stripAllPrefixes).join('\n');
 
         return {
           newContent: fullBefore + removed + fullAfter,
           newStart: lineStart,
-          newEnd: lineStart + removed.length,
+          newEnd: lineStart + removed.length
         };
       }
 
-      // Replace existing list with new type
-      if (currentType !== 'none') {
-        let counter = 1;
-
-        const replaced = lines
-          .map((line) => {
-            const stripped = stripAllPrefixes(line);
-
-            if (desiredType === 'ordered') return `${counter++}. ${stripped}`;
-            if (desiredType === 'unordered') return `- ${stripped}`;
-            return stripped;
-          })
+      // Convert unordered / ordered to task
+      if (currentType === 'unordered' || currentType === 'ordered') {
+        const converted = lines
+          .map(l => `${' '.repeat(l.indent)}- [ ] ${l.content}`)
           .join('\n');
 
         return {
-          newContent: fullBefore + replaced + fullAfter,
+          newContent: fullBefore + converted + fullAfter,
           newStart: lineStart,
-          newEnd: lineStart + replaced.length,
+          newEnd: lineStart + converted.length
         };
       }
 
-      // Apply new list to plain text
-      let counter = 1;
+      // Apply task to plain text
       const applied = lines
-        .map((line) => {
-          if (desiredType === 'ordered') return `${counter++}. ${line}`;
-          if (desiredType === 'unordered') return `- ${line}`;
-          return line;
-        })
+        .map(l => `${' '.repeat(l.indent)}- [ ] ${l.content}`)
         .join('\n');
 
       return {
         newContent: fullBefore + applied + fullAfter,
         newStart: lineStart,
-        newEnd: lineStart + applied.length,
+        newEnd: lineStart + applied.length
       };
-    });
-  }
+    }
+
+    // UNORDERED / ORDERED LOGIC
+    // Toggle off same type
+    if (
+      (desiredType === 'unordered' && currentType === 'unordered') ||
+      (desiredType === 'ordered' && currentType === 'ordered')
+    ) {
+      const removed = lines.map(stripAllPrefixes).join('\n');
+
+      return {
+        newContent: fullBefore + removed + fullAfter,
+        newStart: lineStart,
+        newEnd: lineStart + removed.length
+      };
+    }
+
+    // Replace existing list with new type
+    if (currentType !== 'none') {
+      const counters: Record<number, number> = {};
+
+      const replaced = lines
+        .map(l => {
+          const indent = l.indent;
+
+          if (desiredType === 'ordered') {
+            counters[indent] = (counters[indent] || 0) + 1;
+            return `${' '.repeat(indent)}${counters[indent]}. ${l.content}`;
+          }
+
+          if (desiredType === 'unordered') {
+            return `${' '.repeat(indent)}- ${l.content}`;
+          }
+
+          return `${' '.repeat(indent)}${l.content}`;
+        })
+        .join('\n');
+
+      return {
+        newContent: fullBefore + replaced + fullAfter,
+        newStart: lineStart,
+        newEnd: lineStart + replaced.length
+      };
+    }
+
+    // Apply new list to plain text
+    const counters: Record<number, number> = {};
+
+    const applied = lines
+      .map(l => {
+        const indent = l.indent;
+
+        if (desiredType === 'ordered') {
+          counters[indent] = (counters[indent] || 0) + 1;
+          return `${' '.repeat(indent)}${counters[indent]}. ${l.content}`;
+        }
+
+        if (desiredType === 'unordered') {
+          return `${' '.repeat(indent)}- ${l.content}`;
+        }
+
+        return `${' '.repeat(indent)}${l.content}`;
+      })
+      .join('\n');
+
+    return {
+      newContent: fullBefore + applied + fullAfter,
+      newStart: lineStart,
+      newEnd: lineStart + applied.length
+    };
+  });
+}
   insertLink() {
     this.applyMarkdownAction((content, start, end) => {
       const selected = content.slice(start, end) || 'link text';
