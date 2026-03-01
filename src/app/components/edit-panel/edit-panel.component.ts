@@ -533,19 +533,6 @@ export class EditPanelComponent {
   openLinkUrlPanel() {
     this.editor.setSidebarTab('link-url');
   }
-  insertLink() {
-    this.applyMarkdownAction((content, start, end) => {
-      const selected = content.slice(start, end) || 'link text';
-      const link = `[${selected}](https://example.com)`;
-
-      const newContent = content.slice(0, start) + link + content.slice(end);
-
-      const newStart = start + 1;
-      const newEnd = start + 1 + selected.length;
-
-      return { newContent, newStart, newEnd };
-    });
-  }
 
   // Code section
   insertCodeBlock() {
