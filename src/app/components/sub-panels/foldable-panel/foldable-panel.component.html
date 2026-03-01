@@ -10,7 +10,7 @@
 
   <div class="section">
     <label class="section-label">Content Lines</label>
-    <div class="line-row" *ngFor="let line of lines; let index = index">
+    <div class="line-row" *ngFor="let line of lines; let index = index; trackBy: trackByIndex">
       <input class="text-input" [(ngModel)]="lines[index]" />
       <button (click)="removeLine(index)"
               class="delete-line-btn"

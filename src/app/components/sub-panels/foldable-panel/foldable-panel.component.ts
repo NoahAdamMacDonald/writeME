@@ -63,4 +63,8 @@ export class FoldablePanelComponent {
     </details>
     `;
   }
+
+  trackByIndex(index: number) {
+    return index;
+  }
 }
