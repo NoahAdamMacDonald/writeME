@@ -46,7 +46,7 @@
         aria-expanded="false">
 
         <span>{{cat.icon}} {{cat.name}}</span>
-        <ng-container *ngIf="searchTerm">({{cat.emojis.length}})</ng-container>
+        <ng-container *ngIf="searchTerm">({{cat.filtered.length}})</ng-container>
         <svg class="chevron" viewBox="0 0 24 24">
         <path d="M6 9l6 6 6-6"
               stroke="currentColor"
@@ -59,7 +59,7 @@
 
     <div [id]="cat.id" class="collapse">
       <div class="section-body">
-        <div *ngFor="let emoji of cat.emojis" class="emoji-row">
+        <div *ngFor="let emoji of cat.filtered" class="emoji-row">
           <span class="emoji">{{emoji.emoji}}</span>
           <span class="emoji-name">{{emoji.name}}</span>
 
