@@ -1,1 +1,56 @@
-<p>link-section-panel works!</p>
+<div class="link-section-panel">
+
+  <button class="back-btn" (click)="editor.setSidebarTab('edit')">Back</button>
+
+  <div class="section">
+    <label class="section-label">Link Text</label>
+    <input class="text-input" [(ngModel)]="text" />
+  </div>
+
+  <div class="section">
+    <label class="section-label">Choose Section</label>
+
+    <div class="anchor-list">
+      <div class="anchor-item"
+           *ngFor="let a of builtInAnchors"
+           (click)="anchor = a"
+           [class.selected]="anchor === a">
+        {{ a }}
+      </div>
+
+      <div class="anchor-item"
+           *ngFor="let a of headingAnchors"
+           (click)="anchor = a"
+           [class.selected]="anchor === a">
+        {{ a }}
+      </div>
+    </div>
+  </div>
+
+  <div class="section actions">
+
+    <button class="danger-btn"
+            *ngIf="editing"
+            (click)="deleteExistingLink()">
+      Delete Link
+    </button>
+
+    <button class="primary-btn"
+            *ngIf="editing"
+            (click)="save()">
+      Save
+    </button>
+
+    <button class="primary-btn"
+            *ngIf="!editing"
+            (click)="insert()">
+      Insert
+    </button>
+
+  </div>
+
+  <div *ngIf="showWarning" class="warning-message">
+    {{ warningMessage }}
+  </div>
+
+</div>
