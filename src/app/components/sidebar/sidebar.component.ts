@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FilePanelComponent } from '../file-panel/file-panel.component';
 import { EditPanelComponent } from '../edit-panel/edit-panel.component';
 import { IconPanelComponent } from '../icon-panel/icon-panel.component';
-import { FoldablePanelComponent } from "../foldable-panel/foldable-panel.component";
+import { FoldablePanelComponent } from "../sub-panels/foldable-panel/foldable-panel.component";
 
 import { EditorStateService } from '../../services/editor-state.service';
 
