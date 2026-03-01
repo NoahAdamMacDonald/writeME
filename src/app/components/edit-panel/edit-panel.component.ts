@@ -67,7 +67,6 @@ export class EditPanelComponent {
     );
   }
 
-
   // MARKDOWN ACTIONS
   wrap(wrapper: string) {
     this.applyMarkdownAction((content, start, end) => {
@@ -100,15 +99,55 @@ export class EditPanelComponent {
     });
   }
 
-  applyHeading(level: number) {
-    const prefix = '#'.repeat(level) + ' ';
+  /**
+   * Apply a markdown heading to the selected text.
+   *
+   * If the selected text contains a line, this function will apply the
+   * heading to the line. If the selected text contains a block of text,
+   * this function will apply the heading to the block of text.
+   *
+   * @param level The level of the heading to apply.
+   *
+   * @example <caption>Set a heading level 1 to the selected text</caption>
+   * <code>setHeading(1)</code>
+   */
+  setHeading(level: number) {
     this.applyMarkdownAction((content, start, end) => {
-      const selected = content.slice(start, end);
-      const newContent =
-        content.slice(0, start) + prefix + selected + content.slice(end);
+      const before = content.slice(0, start);
+      const after = content.slice(end);
 
-      const newStart = start + prefix.length;
-      const newEnd = end + prefix.length;
+      const lineStart = before.lastIndexOf('\n') + 1;
+      const lineEndIndex = content.indexOf('\n', end);
+      const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
+
+      const fullBefore = content.slice(0, lineStart);
+      const fullBlock = content.slice(lineStart, lineEnd);
+      const fullAfter = content.slice(lineEnd);
+
+      const lines = fullBlock.split('\n');
+      const hashes = '#'.repeat(level) + ' ';
+
+      const transformed = lines
+        .map((line) => {
+          const trimmed = line.trim();
+
+          if (!trimmed) return line;
+
+          // If line already has the same heading : remove it and exit function
+          const exactHeadingRegex = new RegExp(`^#{${level}}\\s+`);
+          if (exactHeadingRegex.test(trimmed)) {
+            return trimmed.replace(exactHeadingRegex, '');
+          }
+
+          // Remove any other heading level and apply new one
+          const withoutAnyHeading = trimmed.replace(/^#{1,6}\s+/, '');
+          return hashes + withoutAnyHeading;
+        })
+        .join('\n');
+
+      const newContent = fullBefore + transformed + fullAfter;
+      const newStart = lineStart;
+      const newEnd = lineStart + transformed.length;
 
       return { newContent, newStart, newEnd };
     });
