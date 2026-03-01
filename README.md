@@ -78,3 +78,24 @@ Missing
 emoji Testing:
 :grinning::up::exclamation::exclamation::grey_exclamation::grey_exclamation::grey_exclamation::interrobang::bangbang:     :tea:
 
+
+Alert
+    Quotes
+Misc Edit Section
+    Divider
+    Foldable text
+        ex: <details>
+                <summary>Title 1</summary>
+                <p>Lorem ipsum dolor sit amet, ...</p>
+            </details>
+    Hotkey
+        ex: <kbd>⌘F</kbd>
+    Tables
+    Pictures
+        ![picture alt](https://placehold.co/600x200 "Title is optional")
+    
+
+Links
+    Link to heading or section
+        [Link to heading](#heading-1 "Goto heading-1")
+        [Link to section](#TOP)
