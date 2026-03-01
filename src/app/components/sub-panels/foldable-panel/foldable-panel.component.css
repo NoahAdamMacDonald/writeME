@@ -117,3 +117,24 @@
 .danger-btn:hover {
   background: var(--danger-hover);
 }
+
+
+/*Warning Message*/
+.warning-message {
+  margin-top: 0.75;
+  padding: 0.5rem 0.75rem;
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border-left: 4px solid var(--danger-border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  animation: fadeInOut 2s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0%   { opacity: 0; transform: translateY(4px); }
+  10%  { opacity: 1; transform: translateY(0); }
+  90%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(4px); }
+}
+

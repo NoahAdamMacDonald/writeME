@@ -17,6 +17,9 @@ export class FoldablePanelComponent {
   summary: string = '';
   lines: string[] = [''];
 
+  showWarning = false;
+  warningMessage = '';
+
   addLine() {
     this.lines.push('');
   }
@@ -34,6 +37,8 @@ export class FoldablePanelComponent {
   }
 
   insert() {
+    if(!this.validate()) return;
+
     const block = this.buildBlock();
 
     this.editor.applyMarkdown(() => {
@@ -52,11 +57,36 @@ export class FoldablePanelComponent {
   }
 
   copyToClipboard() {
+    if(!this.validate()) return;
+
     const block = this.buildBlock();
     navigator.clipboard.writeText(block);
   }
 
-  buildBlock() {
+  private showError(message: string) {
+    this.warningMessage = message;
+    this.showWarning = true;
+    setTimeout(() => {
+      this.showWarning = false;
+    }, 2000);
+  }
+
+  private validate() : boolean {
+    if(!this.summary.trim()) {
+      this.showError('Summary cannot be empty');
+      return false;
+    }
+
+    const hasContent = this.lines.some(line => line.trim());
+    if(!hasContent) {
+      this.showError('Content cannot be empty');
+      return false;
+    }
+
+    return true;
+  }
+
+  buildBlock() : string {
     return `<details>
       <summary>${this.summary}</summary>
       ${this.lines.map(line=>' <p>'+line+'</p>').join('\n')}

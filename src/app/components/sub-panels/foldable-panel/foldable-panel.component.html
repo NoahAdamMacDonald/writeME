@@ -27,4 +27,6 @@
     <button class="primary-btn" (click)="insert()">Insert</button>
     <button class="secondary-btn" (click)="copyToClipboard()">Copy to Clipboard</button>
   </div>
+
+  <div *ngIf="showWarning" class="warning-message">{{warningMessage}}"</div>
 </div>
