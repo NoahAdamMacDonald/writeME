@@ -7,6 +7,7 @@ import { IconPanelComponent } from '../icon-panel/icon-panel.component';
 import { FoldablePanelComponent } from "../sub-panels/foldable-panel/foldable-panel.component";
 import { LinkUrlPanelComponent } from "../sub-panels/link-url-panel/link-url-panel.component";
 import { LinkSectionPanelComponent } from "../sub-panels/link-section-panel/link-section-panel.component";
+import { CodeBlockPanelComponent } from '../sub-panels/code-block-panel/code-block-panel.component';
 
 import { EditorStateService } from '../../services/editor-state.service';
 
@@ -20,7 +21,8 @@ import { EditorStateService } from '../../services/editor-state.service';
     IconPanelComponent,
     FoldablePanelComponent,
     LinkUrlPanelComponent,
-    LinkSectionPanelComponent
+    LinkSectionPanelComponent,
+    CodeBlockPanelComponent
 ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
