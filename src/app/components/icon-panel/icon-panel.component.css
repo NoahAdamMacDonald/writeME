@@ -75,7 +75,7 @@
 .section-header.collapsed .chevron {
   transform: rotate(-90deg);
 }
-
+  
 .section-body {
   padding: 0.8rem 1rem;
   background: var(--header-bg);

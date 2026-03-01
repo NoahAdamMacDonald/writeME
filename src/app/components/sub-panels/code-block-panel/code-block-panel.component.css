@@ -177,3 +177,34 @@
   border-color: var(--brand-bg);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-bg) 40%, transparent);
 }
+
+.language-dropdown-body {
+  max-height: 250px;
+  overflow-y: auto;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+
+  padding: 0.5rem 0.75rem;
+}
+
+.chevron {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease, opacity 0.25s ease, color 0.25s ease;
+  opacity: 0.75;
+}
+
+.section-header:hover .chevron {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.section-header:not(.collapsed) .chevron {
+  transform: rotate(0deg);
+}
+
+.section-header.collapsed .chevron {
+  transform: rotate(-90deg);
+}
