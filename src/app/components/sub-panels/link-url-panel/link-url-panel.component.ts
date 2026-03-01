@@ -43,6 +43,32 @@ export class LinkUrlPanelComponent implements OnInit {
   }
 
 
+  /**
+   * Normalizes a URL by adding https as a default and adding .com to the end if it is not a full URL path.
+   * @param url The URL to normalize.
+   * @returns The normalized URL.
+   */
+  private normalizeUrl(url: string): string {
+    const trimmed = url.trim();
+
+    //add https as a default
+    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      return trimmed;
+    }
+
+    // add a .com as a default if not full url path
+    if (
+      trimmed.includes('.') ||
+      trimmed.includes('/') ||
+      trimmed.includes('#') ||
+      trimmed.includes('?')
+    ) {
+      return 'https://' + trimmed;
+    }
+
+    return 'https://' + trimmed + '.com';
+  }
+
   //Handle Existing Link
   loadExistingLink() {
     const content = this.editor.content;
@@ -73,7 +99,8 @@ export class LinkUrlPanelComponent implements OnInit {
   insert() {
     if (!this.validate()) return;
 
-    const block = `[${this.text}](${this.url})`;
+    const normalizedUrl = this.normalizeUrl(this.url);
+    const block = `[${this.text}](${normalizedUrl})`;
 
     this.editor.applyMarkdown(() => {
       const content = this.editor.content;
@@ -93,7 +120,8 @@ export class LinkUrlPanelComponent implements OnInit {
   save() {
     if (!this.validate()) return;
 
-    const block = `[${this.text}](${this.url})`;
+    const normalizedUrl = this.normalizeUrl(this.url);
+    const block = `[${this.text}](${normalizedUrl})`;
 
     this.editor.applyMarkdown(() => {
       const content = this.editor.content;
