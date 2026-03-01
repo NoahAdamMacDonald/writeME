@@ -77,9 +77,17 @@ export class FoldablePanelComponent {
       return false;
     }
 
-    const hasContent = this.lines.some(line => line.trim());
-    if(!hasContent) {
-      this.showError('Content cannot be empty');
+    if(this.lines.length===1) {
+      if(!this.lines[0].trim()) {
+        this.showError('Content cannot be empty');
+        return false;
+      }
+      return true;
+    }
+
+    const hasEmptyLine = this.lines.some(line => !line.trim());
+    if(hasEmptyLine) {
+      this.showError('Content cannot have empty lines');
       return false;
     }
 
