@@ -132,3 +132,24 @@ button:active {
   transform: translateY(0);
   box-shadow: none;
 }
+
+.search-bar {
+  padding: 0 0.75rem 0.5rem 0.75rem;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--divider);
+  background: var(--header-bg);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);
+}
