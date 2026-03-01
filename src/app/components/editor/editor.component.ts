@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EditorStateService } from '../../services/editor-state.service';
@@ -10,14 +10,20 @@ import { EditorStateService } from '../../services/editor-state.service';
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',
 })
-export class EditorComponent {
+export class EditorComponent implements OnInit {
   @ViewChild('textarea') textarea!: ElementRef<HTMLTextAreaElement>;
+  editorState = inject(EditorStateService);
 
   content = '';
   lines: number[] = [1];
   activeLine = 1;
 
-  constructor(private editorState: EditorStateService) {
+  ngOnInit() {
+    const saved = localStorage.getItem('editorContent');
+    if (saved) {
+      this.editorState.setContent(saved);
+    }
+
     this.editorState.content$.subscribe((content) => {
       this.content = content;
       this.updateLines();
@@ -62,6 +68,8 @@ export class EditorComponent {
 
   onInput(event: any) {
     this.editorState.setContent(this.content);
+    localStorage.setItem('editorContent', this.content);
+
     this.updateLines();
     this.updateActiveLine(event);
     this.updateSelection(event);
@@ -114,6 +122,7 @@ export class EditorComponent {
         });
 
         this.editorState.setContent(this.content);
+        localStorage.setItem('editorContent', this.content);
         this.editorState.updateSelection(newPos, newPos);
       }
       return;
@@ -128,6 +137,13 @@ export class EditorComponent {
     });
 
     this.editorState.setContent(this.content);
+    localStorage.setItem('editorContent', this.content);
     this.editorState.updateSelection(start + 4, start + 4);
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Tab') {
+      this.handleTabs(event);
+    }
   }
 }

@@ -25,6 +25,7 @@ export class EditorStateService {
   setContent(value: string) {
     this.content = value;
     this.contentSubject.next(value);
+    localStorage.setItem('editorContent', value);
   }
 
   updateSelection(start: number, end: number) {
@@ -81,6 +82,13 @@ export class EditorStateService {
         this.codeToEmoji.set(emoji.code, emoji.emoji);
         this.emojiToCode.set(emoji.emoji, emoji.code);
       }
+    }
+
+    const saved = localStorage.getItem('editorContent');
+
+    if (saved) {
+      this.content = saved;
+      this.contentSubject.next(saved);
     }
   }
 }
