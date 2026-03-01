@@ -539,18 +539,8 @@ export class EditPanelComponent {
   }
 
   // Code section
-  insertCodeBlock() {
-    this.applyMarkdownAction((content, start, end) => {
-      const selected = content.slice(start, end) || 'code';
-      const block = '```\n' + selected + '\n```\n';
-
-      const newContent = content.slice(0, start) + block + content.slice(end);
-
-      const newStart = start + 4;
-      const newEnd = start + 4 + selected.length;
-
-      return { newContent, newStart, newEnd };
-    });
+  openCodeBlockPanel() {
+    this.editor.setSidebarTab('code-block');
   }
 
   //Misc Section
