@@ -534,6 +534,10 @@ export class EditPanelComponent {
     this.editor.setSidebarTab('link-url');
   }
 
+  openLinkSectionPanel() {
+    this.editor.setSidebarTab('link-section');
+  }
+
   // Code section
   insertCodeBlock() {
     this.applyMarkdownAction((content, start, end) => {

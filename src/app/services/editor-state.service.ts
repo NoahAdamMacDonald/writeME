@@ -8,7 +8,7 @@ import emojiData from '../../assets/emoji.json';
 export class EditorStateService {
   private contentSubject = new BehaviorSubject<string>('');
 
-  sidebarTab = signal<'file' | 'edit' | 'icons' | 'foldable' | 'link-url'>('file');
+  sidebarTab = signal<'file' | 'edit' | 'icons' | 'foldable' | 'link-url' | 'link-section'>('file');
 
   //Map for emoji conversion
   private codeToEmoji = new Map<string, string>();
@@ -79,7 +79,7 @@ export class EditorStateService {
   }
 
   //Panel handler
-  setSidebarTab(tab: 'file' | 'edit' | 'icons' | 'foldable' | 'link-url') {
+  setSidebarTab(tab: 'file' | 'edit' | 'icons' | 'foldable' | 'link-url' | 'link-section') {
     this.sidebarTab.set(tab);
   }
 
