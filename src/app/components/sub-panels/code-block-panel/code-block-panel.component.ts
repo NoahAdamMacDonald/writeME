@@ -5,8 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { EditorStateService } from '../../../services/editor-state.service';
 import { TextEditingService } from '../../../services/text-editing.service';
 
-import languageData from '../../../../assets/languages.json';
-import hljs from 'highlight.js/lib/common';
+import hljs from 'highlight.js';
 
 @Component({
   selector: 'app-code-block-panel',
@@ -30,10 +29,10 @@ export class CodeBlockPanelComponent implements OnInit {
   showWarning = false;
   warningMessage = '';
 
-  languages: string[] = languageData;
+  languages: string[] = [];
 
   searchTerm = '';
-  filteredLanguages: string[] = this.languages;
+  filteredLanguages: string[] = [];
 
   private showError(msg: string) {
     this.warningMessage = msg;
@@ -244,6 +243,7 @@ ${fence}
   }
 
   ngOnInit() {
+    this.languages = hljs.listLanguages().sort();
     this.filteredLanguages = this.languages;
     this.loadExistingCodeBlock();
     this.updateHighlight();
