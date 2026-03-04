@@ -70,6 +70,10 @@
     </div>
   </div>
 
+  <div *ngIf="showWarning" class="warning-message">
+    {{ warningMessage }}
+  </div>
+
   <div class="section actions">
     <!--Existing Block-->
     <button class="danger-btn"
@@ -92,9 +96,4 @@
     </button>
 
   </div>
-
-  <div *ngIf="showWarning" class="warning-message">
-    {{ warningMessage }}
-  </div>
-
 </div>
