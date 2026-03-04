@@ -4,47 +4,55 @@ import { Injectable } from '@angular/core';
 export class TextEditingService {
   indent = '    '; // 4 spaces
 
-  handleTab(
-    content: string,
-    start: number,
-    end: number,
-  ): {
-    content: string;
-    cursor: number;
-  } {
+  handleTab(content: string, start: number, end: number) {
+    const indent = this.indent;
+
+    const lineStart = content.lastIndexOf('\n', start - 1) + 1;
+
+    let lineEnd = content.indexOf('\n', end);
+    if (lineEnd === -1) lineEnd = content.length;
+
+    const block = content.slice(lineStart, lineEnd);
+    const lines = block.split('\n');
+
+    const indented = lines.map((line) => indent + line).join('\n');
+
     const newContent =
-      content.slice(0, start) + this.indent + content.slice(end);
+      content.slice(0, lineStart) + indented + content.slice(lineEnd);
 
     return {
       content: newContent,
-      cursor: start + this.indent.length,
+      newStart: start + indent.length,
+      newEnd: end + indent.length * lines.length,
     };
   }
 
-  handleShiftTab(
-    content: string,
-    start: number,
-    end: number,
-  ): {
-    content: string;
-    cursor: number;
-  } {
-    const before = content.substring(0, start);
-    const lineStart = before.lastIndexOf('\n') + 1;
-    const currentLine = content.substring(lineStart, end);
+  handleShiftTab(content: string, start: number, end: number) {
+    const indent = this.indent;
 
-    if (!currentLine.startsWith(this.indent)) {
-      return { content, cursor: start };
-    }
+    const lineStart = content.lastIndexOf('\n', start - 1) + 1;
+
+    let lineEnd = content.indexOf('\n', end);
+    if (lineEnd === -1) lineEnd = content.length;
+
+    const block = content.slice(lineStart, lineEnd);
+    const lines = block.split('\n');
+
+    const unindented = lines.map((line) =>
+      line.startsWith(indent) ? line.slice(indent.length) : line,
+    );
+
+    const removed = lines.filter((line) => line.startsWith(indent)).length;
 
     const newContent =
-      content.substring(0, lineStart) +
-      currentLine.substring(this.indent.length) +
-      content.substring(end);
+      content.slice(0, lineStart) +
+      unindented.join('\n') +
+      content.slice(lineEnd);
 
     return {
       content: newContent,
-      cursor: start - this.indent.length,
+      newStart: Math.max(start - indent.length, lineStart),
+      newEnd: end - indent.length * removed,
     };
   }
 
