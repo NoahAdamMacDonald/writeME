@@ -5,7 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { EditorStateService } from '../../../services/editor-state.service';
 import { TextEditingService } from '../../../services/text-editing.service';
 
+import hljsCobol from 'highlightjs-cobol';
 import hljs from 'highlight.js';
+hljs.registerLanguage('cobol', hljsCobol);
 
 @Component({
   selector: 'app-code-block-panel',
