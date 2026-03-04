@@ -201,7 +201,8 @@ ${fence}
       this.updateHighlight();
 
       setTimeout(() => {
-        ta.selectionStart = ta.selectionEnd = result.cursor;
+        ta.selectionStart = result.newStart;
+        ta.selectionEnd = result.newEnd;
       });
 
       return;

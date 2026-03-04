@@ -113,7 +113,7 @@ export class EditorComponent implements OnInit {
   }
 
   private applyContentEdit(
-    result: { content: string; cursor: number },
+    result: { content: string; newStart: number; newEnd: number },
     ta: HTMLTextAreaElement,
   ) {
     this.content = result.content;
@@ -121,7 +121,8 @@ export class EditorComponent implements OnInit {
     localStorage.setItem('editorContent', this.content);
 
     setTimeout(() => {
-      ta.selectionStart = ta.selectionEnd = result.cursor;
+      ta.selectionStart = result.newStart;
+      ta.selectionEnd = result.newEnd;
     });
 
     this.updateLines();
