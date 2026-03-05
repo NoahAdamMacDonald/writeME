@@ -17,7 +17,6 @@
   padding-top: 1rem;
 }
 
-/* Back button */
 .back-btn {
   display: flex;
   align-items: center;
@@ -27,8 +26,9 @@
   color: var(--btn-text);
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
-  cursor: pointer;
+  text-align: left;
   font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .back-btn:hover {
@@ -41,7 +41,6 @@
   flex-shrink: 0;
 }
 
-/* Section */
 .section-label {
   font-weight: bold;
   margin-bottom: 0.25rem;
@@ -54,25 +53,79 @@
   gap: 0.75rem;
 }
 
-/* Column controls */
-.column-controls {
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
+.table-wrapper {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto 1fr;
+  gap: 0.5rem;
 }
 
-.col-control {
+.column-controls-row {
+  grid-column: 2 / 3;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.column-control-cell {
+  display: table-cell;
+  padding: 0;
+  text-align: center;
+}
+
+.row-controls-col {
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  align-items: center;
+  gap: 0.25rem;
 }
 
-.col-control button,
-.row-controls button,
-.column-edit button,
-.row-edit button {
-  padding: 0.35rem 0.6rem;
+.row-controls-col .cell-btn {
+  flex: 1;
+}
+
+table {
+  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  border-collapse: collapse;
+  background: var(--bg-main);
+  border: 1px solid var(--border-subtle);
+}
+
+td {
+  border: 1px solid var(--border-subtle);
+  padding: 0;
+}
+
+.text-input {
+  width: 100%;
+  padding: 0.5rem;
+  background: var(--bg-main);
+  color: var(--text-primary);
+  border: none;
+  font-size: 0.85rem;
+}
+
+.column-edit {
+  grid-row: 2 / 3;
+  grid-column: 3 / 4;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.row-edit {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.cell-btn {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
   background: var(--btn-bg);
   color: var(--btn-text);
   border: 1px solid var(--border-subtle);
@@ -81,71 +134,13 @@
   font-size: 0.8rem;
 }
 
-.col-control button:hover,
-.row-controls button:hover,
-.column-edit button:hover,
-.row-edit button:hover {
+.cell-btn:hover {
   background: var(--btn-hover);
 }
 
-/* Table area */
-.table-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.row-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.column-edit {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-table {
-  border-collapse: collapse;
-  background: var(--bg-main);
-  border: 1px solid var(--border-subtle);
-}
-
-td {
-  border: 1px solid var(--border-subtle);
-  padding: 0.25rem;
-}
-
-td input {
-  width: 100%;
-  padding: 0.4rem;
-  background: var(--bg-main);
-  color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
-  border-radius: 4px;
-  font-size: 0.85rem;
-}
-
-td input:focus {
-  outline: none;
-  border-color: var(--brand-bg);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-bg) 40%, transparent);
-}
-
-/* Row add/remove */
-.row-edit {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-/* Actions */
 .primary-btn {
   width: 100%;
-  padding: 0.6rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   background: var(--btn-bg);
   color: var(--btn-text);
   border: 1px solid var(--border-subtle);
@@ -168,7 +163,7 @@ td input:focus {
   background: var(--danger-hover);
 }
 
-/* Warning */
+/* WARNING */
 .warning-message {
   margin-top: 0.75rem;
   padding: 0.5rem 0.75rem;
@@ -178,11 +173,4 @@ td input:focus {
   border-radius: 4px;
   font-size: 0.85rem;
   animation: fadeInOut 2s ease forwards;
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(4px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(4px); }
 }
