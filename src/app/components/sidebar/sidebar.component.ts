@@ -1,13 +1,17 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+//Panels
 import { FilePanelComponent } from '../file-panel/file-panel.component';
 import { EditPanelComponent } from '../edit-panel/edit-panel.component';
 import { IconPanelComponent } from '../icon-panel/icon-panel.component';
+
+//Sub-panels
 import { FoldablePanelComponent } from "../sub-panels/foldable-panel/foldable-panel.component";
 import { LinkUrlPanelComponent } from "../sub-panels/link-url-panel/link-url-panel.component";
 import { LinkSectionPanelComponent } from "../sub-panels/link-section-panel/link-section-panel.component";
 import { CodeBlockPanelComponent } from '../sub-panels/code-block-panel/code-block-panel.component';
+import { TabelPanelComponent } from '../sub-panels/tabel-panel/tabel-panel.component';
 
 import { EditorStateService } from '../../services/editor-state.service';
 
@@ -22,7 +26,8 @@ import { EditorStateService } from '../../services/editor-state.service';
     FoldablePanelComponent,
     LinkUrlPanelComponent,
     LinkSectionPanelComponent,
-    CodeBlockPanelComponent
+    CodeBlockPanelComponent,
+    TabelPanelComponent
 ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',

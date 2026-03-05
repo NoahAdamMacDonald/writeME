@@ -604,4 +604,8 @@ export class EditPanelComponent {
   openFoldablePanel() {
     this.editor.setSidebarTab('foldable');
   }
+
+  openTabelPanel() {
+    this.editor.setSidebarTab('table');
+  }
 }

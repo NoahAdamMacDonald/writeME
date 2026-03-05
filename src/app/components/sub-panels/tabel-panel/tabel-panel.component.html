@@ -1,0 +1,41 @@
+<button class="back-btn" (click)="editor.setSidebarTab('edit')">← Back</button>
+
+<div class="table-builder">
+
+  <!-- Column controls -->
+  <div class="column-controls">
+    <div *ngFor="let col of rows[0]; let c = index" class="col-control">
+      <button (click)="toggleAlignment(c)">Align</button>
+      <button (click)="selectColumn(c)">Swap</button>
+    </div>
+  </div>
+
+  <!-- Left row swap buttons -->
+  <div class="row-controls">
+    <button *ngFor="let r of rows; let i = index" (click)="selectRow(i)">Swap</button>
+  </div>
+
+  <!-- Table grid -->
+  <table>
+    <tr *ngFor="let row of rows; let r = index">
+      <td *ngFor="let cell of row; let c = index">
+        <input [(ngModel)]="rows[r][c]" />
+      </td>
+    </tr>
+  </table>
+
+  <!-- Column add/remove -->
+  <div class="column-edit">
+    <button (click)="addColumn()">+ Col</button>
+    <button (click)="removeColumn()">– Col</button>
+  </div>
+
+  <!-- Row add/remove -->
+  <div class="row-edit">
+    <button (click)="addRow()">+ Row</button>
+    <button (click)="removeRow()">– Row</button>
+  </div>
+
+</div>
+
+<button class="primary-btn" (click)="insert()">Insert Table</button>
