@@ -36,11 +36,6 @@ export class FoldablePanelComponent implements OnInit {
     }
   }
 
-  deleteAll() {
-    this.summary = '';
-    this.lines = [''];
-  }
-
   insert() {
     if (!this.validate()) return;
 
