@@ -106,13 +106,6 @@ export class TablePanelComponent implements OnInit {
     }
   }
 
-  private cleanCells(cells: string[]): string[] {
-    while (cells.length && cells[cells.length - 1] === '') {
-      cells.pop();
-    }
-    return cells;
-  }
-
   buildTable(): string {
     const header = this.rows[0];
     const body = this.rows.slice(1);
@@ -132,7 +125,10 @@ export class TablePanelComponent implements OnInit {
     return lines.join('\n') + '\n';
   }
 
+  //New Table
   insert() {
+    if (!this.validate()) return;
+
     const table = this.buildTable();
 
     this.editor.applyMarkdown(() => {
@@ -149,7 +145,11 @@ export class TablePanelComponent implements OnInit {
     this.editor.setSidebarTab('edit');
   }
 
+
+  //Existing Table
   save() {
+    if (!this.validate()) return;
+
     const table = this.buildTable();
 
     this.editor.applyMarkdown(() => {
@@ -201,6 +201,7 @@ export class TablePanelComponent implements OnInit {
       }
     }
 
+    //Helper Functions
     const isTableLine = (line: string) =>
       line.trim().startsWith('|') && line.trim().endsWith('|');
 
@@ -288,6 +289,20 @@ export class TablePanelComponent implements OnInit {
     this.originalEnd = endOffset;
 
     this.editing = true;
+  }
+
+  private validate() : boolean {
+  const allCells = this.rows.flat();
+
+  const hasContent = allCells.some(cell => cell.trim().length > 0);
+
+  if (!hasContent) {
+    this.showError('Table cannot be empty');
+    return false;
+  }
+
+  return true;
+
   }
 
   ngOnInit() {
