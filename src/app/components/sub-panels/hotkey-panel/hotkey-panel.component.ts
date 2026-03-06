@@ -62,8 +62,10 @@ export class HotkeyPanelComponent implements OnInit {
 
     this.filteredGroups = this.hotkeyGroups.map(group=>({
       ...group,
-      keys:group.keys.filter(key=>key.name.toLowerCase().includes(term) || key.symbol.toLowerCase().includes(term))
-    })).filter(group=>group.keys.length > 0);
+      keys:group.keys.filter(key=>key.name.toLowerCase().includes(term) ||
+      key.symbol.toLowerCase().includes(term) ||
+      key.aliases?.some(alias=>alias.toLowerCase().includes(term))
+    )})).filter(group=>group.keys.length > 0);
   }
 
   addSymbol(symbol: string) {
