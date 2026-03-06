@@ -173,65 +173,75 @@ export class EditPanelComponent {
    * <code>setAlert('NOTE')</code>
    */
   setAlert(type: string) {
-    this.applyMarkdownAction((content, start, end) => {
-      const before = content.slice(0, start);
-      const after = content.slice(end);
+  this.applyMarkdownAction((content, start, end) => {
+    const before = content.slice(0, start);
+    const after = content.slice(end);
 
-      // Expand to full lines
-      const lineStart = before.lastIndexOf('\n') + 1;
-      const lineEndIndex = content.indexOf('\n', end);
-      const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
+    // Expand to full lines
+    let lineStart = before.lastIndexOf('\n') + 1;
+    const lineEndIndex = content.indexOf('\n', end);
+    const lineEnd = lineEndIndex === -1 ? content.length : lineEndIndex;
 
-      const fullBefore = content.slice(0, lineStart);
-      const fullBlock = content.slice(lineStart, lineEnd);
-      const fullAfter = content.slice(lineEnd);
+    let fullBefore = content.slice(0, lineStart);
+    let fullBlock = content.slice(lineStart, lineEnd);
+    let fullAfter = content.slice(lineEnd);
 
-      const lines = fullBlock.split('\n');
+    const alertRegex = /^>\s*\[!(\w+)\]\s*$/;
 
-      // Detect existing alert
-      const alertRegex = /^>\s*\[!(\w+)\]\s*$/;
-      const firstLine = lines[0].trim();
-      const match = firstLine.match(alertRegex);
-      const existingType = match ? match[1] : null;
-
-      const isQuote = lines.every((line) => /^\s*>\s?/.test(line));
-
-      // QUOTE unique case
-      if (type === 'QUOTE') {
-        // If already a quote → remove it
-        if (isQuote && !existingType) {
-          const withoutQuote = lines
-            .map((line) => line.replace(/^\s*>\s?/, ''))
-            .join('\n');
-
-          const newContent = fullBefore + withoutQuote + fullAfter;
-          const newStart = lineStart;
-          const newEnd = lineStart + withoutQuote.length;
-
-          return { newContent, newStart, newEnd };
+    // Check previous line for alert
+    {
+      const tempLines = fullBlock.split('\n');
+      const currentIsQuoteLine = tempLines[0].trim().startsWith('>');
+      if (currentIsQuoteLine && lineStart > 0) {
+        const prevLineBreak = content.lastIndexOf('\n', lineStart - 2);
+        const prevLineStart = prevLineBreak + 1;
+        const prevLineEnd = lineStart - 1;
+        if (prevLineEnd > prevLineStart) {
+          const prevLine = content.slice(prevLineStart, prevLineEnd).trim();
+          if (alertRegex.test(prevLine)) {
+            lineStart = prevLineStart;
+            fullBefore = content.slice(0, lineStart);
+            fullBlock = content.slice(lineStart, lineEnd);
+            fullAfter = content.slice(lineEnd);
+          }
         }
+      }
+    }
 
-        // If it's an alert : replace alert with quote
-        if (existingType) {
-          const withoutAlert = lines
-            .slice(1)
-            .map((line) => line.replace(/^>\s?/, ''))
-            .join('\n');
+    const lines = fullBlock.split('\n');
 
-          const quoted = withoutAlert
-            .split('\n')
-            .map((line) => `> ${line}`)
-            .join('\n');
+    // Detect existing alert
+    const firstLine = lines[0].trim();
+    const match = firstLine.match(alertRegex);
+    const existingType = match ? match[1] : null;
 
-          const newContent = fullBefore + quoted + fullAfter;
-          const newStart = lineStart;
-          const newEnd = lineStart + quoted.length;
+    const isQuote = lines.every((line) => /^\s*>\s?/.test(line));
 
-          return { newContent, newStart, newEnd };
-        }
+    // QUOTE unique case
+    if (type === 'QUOTE') {
+      if (isQuote && !existingType) {
+        const withoutQuote = lines
+          .map((line) => line.replace(/^\s*>\s?/, ''))
+          .join('\n');
 
-        // Apply quote to plain text
-        const quoted = lines.map((line) => `> ${line}`).join('\n');
+        const newContent = fullBefore + withoutQuote + fullAfter;
+        const newStart = lineStart;
+        const newEnd = lineStart + withoutQuote.length;
+
+        return { newContent, newStart, newEnd };
+      }
+
+      // If it's an alert : replace alert with quote
+      if (existingType) {
+        const withoutAlert = lines
+          .slice(1)
+          .map((line) => line.replace(/^>\s?/, ''))
+          .join('\n');
+
+        const quoted = withoutAlert
+          .split('\n')
+          .map((line) => `> ${line}`)
+          .join('\n');
 
         const newContent = fullBefore + quoted + fullAfter;
         const newStart = lineStart;
@@ -240,61 +250,72 @@ export class EditPanelComponent {
         return { newContent, newStart, newEnd };
       }
 
-      // Alerts
+      // Apply quote to plain text
+      const quoted = lines.map((line) => `> ${line}`).join('\n');
 
-      // If the Same alert : remove it and exit function
-      if (existingType && existingType.toUpperCase() === type.toUpperCase()) {
-        const withoutAlert = lines
-          .slice(1) // remove the first line (the alert header)
-          .map((line) => line.replace(/^>\s?/, '')) // remove leading "> "
-          .join('\n');
+      const newContent = fullBefore + quoted + fullAfter;
+      const newStart = lineStart;
+      const newEnd = lineStart + quoted.length;
 
-        const newContent = fullBefore + withoutAlert + fullAfter;
-        const newStart = lineStart;
-        const newEnd = lineStart + withoutAlert.length;
+      return { newContent, newStart, newEnd };
+    }
 
-        return { newContent, newStart, newEnd };
-      }
+    // Alerts
 
-      // Replace quote with alert
-      if (isQuote && !existingType) {
-        const unquoted = lines.map((line) => line.replace(/^\s*>\s?/, ''));
+    // If the Same alert : remove it and exit function
+    if (existingType && existingType.toUpperCase() === type.toUpperCase()) {
+      const withoutAlert = lines
+        .slice(1)
+        .map((line) => line.replace(/^>\s?/, ''))
+        .join('\n');
 
-        const block = [
-          `> [!${type}]`,
-          ...unquoted.map((line) => `> ${line}`),
-        ].join('\n');
+      const newContent = fullBefore + withoutAlert + fullAfter;
+      const newStart = lineStart;
+      const newEnd = lineStart + withoutAlert.length;
 
-        const newContent = fullBefore + block + fullAfter;
-        const newStart = lineStart;
-        const newEnd = lineStart + block.length;
+      return { newContent, newStart, newEnd };
+    }
 
-        return { newContent, newStart, newEnd };
-      }
+    // Replace quote with alert
+    if (isQuote && !existingType) {
+      const unquoted = lines.map((line) => line.replace(/^\s*>\s?/, ''));
 
-      // Replace existing alert and apply new one
-      if (existingType) {
-        const replaced = [`> [!${type}]`, ...lines.slice(1)].join('\n');
-
-        const newContent = fullBefore + replaced + fullAfter;
-        const newStart = lineStart;
-        const newEnd = lineStart + replaced.length;
-
-        return { newContent, newStart, newEnd };
-      }
-
-      // Apply new alert if none exists
-      const block = [`> [!${type}]`, ...lines.map((line) => `> ${line}`)].join(
-        '\n',
-      );
+      const block = [
+        `> [!${type}]`,
+        ...unquoted.map((line) => `> ${line}`),
+      ].join('\n');
 
       const newContent = fullBefore + block + fullAfter;
       const newStart = lineStart;
       const newEnd = lineStart + block.length;
 
       return { newContent, newStart, newEnd };
-    });
-  }
+    }
+
+    // Replace existing alert and apply new one
+    if (existingType) {
+      const replaced = [`> [!${type}]`, ...lines.slice(1)].join('\n');
+
+      const newContent = fullBefore + replaced + fullAfter;
+      const newStart = lineStart;
+      const newEnd = lineStart + replaced.length;
+
+      return { newContent, newStart, newEnd };
+    }
+
+    // Apply new alert if none exists
+    const block = [`> [!${type}]`, ...lines.map((line) => `> ${line}`)].join(
+      '\n',
+    );
+
+    const newContent = fullBefore + block + fullAfter;
+    const newStart = lineStart;
+    const newEnd = lineStart + block.length;
+
+    return { newContent, newStart, newEnd };
+  });
+}
+
 
   /**
    * CAUTION: Regex nightmare ahead, you have been warned
