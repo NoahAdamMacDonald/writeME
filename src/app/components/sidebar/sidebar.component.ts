@@ -10,6 +10,7 @@ import { IconPanelComponent } from '../icon-panel/icon-panel.component';
 import { FoldablePanelComponent } from '../sub-panels/foldable-panel/foldable-panel.component';
 import { LinkUrlPanelComponent } from '../sub-panels/link-url-panel/link-url-panel.component';
 import { LinkSectionPanelComponent } from '../sub-panels/link-section-panel/link-section-panel.component';
+import { ImageEmbedPanelComponent } from '../sub-panels/image-embed-panel/image-embed-panel.component';
 import { CodeBlockPanelComponent } from '../sub-panels/code-block-panel/code-block-panel.component';
 import { TablePanelComponent } from '../sub-panels/table-panel/table-panel.component';
 
@@ -28,7 +29,8 @@ import { EditorStateService } from '../../services/editor-state.service';
     LinkSectionPanelComponent,
     CodeBlockPanelComponent,
     TablePanelComponent,
-  ],
+    ImageEmbedPanelComponent
+],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })

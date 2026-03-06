@@ -538,6 +538,10 @@ export class EditPanelComponent {
     this.editor.setSidebarTab('link-section');
   }
 
+  openImageEmbedPanel() {
+    this.editor.setSidebarTab('image-embed');
+  }
+
   // Code section
   openCodeBlockPanel() {
     this.editor.setSidebarTab('code-block');

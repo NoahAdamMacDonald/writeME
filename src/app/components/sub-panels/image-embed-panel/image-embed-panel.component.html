@@ -1,0 +1,36 @@
+<div class="image-embed-panel">
+
+  <button class="back-btn" (click)="editor.setSidebarTab('edit')">
+    <svg class="back-icon" viewBox="0 0 24 24">
+      <path d="M15 6l-6 6 6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+    </svg>
+    Back
+  </button>
+
+  <label class="section-label">Embed Image</label>
+
+  <input
+    class="text-input"
+    placeholder="Image URL (relative or absolute)"
+    [(ngModel)]="imageUrl"
+    (input)="updatePreview()"
+  />
+
+  <div class="image-preview" *ngIf="previewUrl">
+    <img [src]="previewUrl" alt="Preview" />
+  </div>
+
+  <div class="actions">
+    <button class="primary-btn" *ngIf="!editing" (click)="insert()">Insert</button>
+    <button class="primary-btn" *ngIf="editing" (click)="save()">Save</button>
+    <button class="danger-btn" *ngIf="editing" (click)="deleteExistingImage()">Delete</button>
+  </div>
+
+  <div *ngIf="showWarning" class="warning-message">{{warningMessage}}</div>
+
+</div>
