@@ -618,4 +618,8 @@ export class EditPanelComponent {
   openTablePanel() {
     this.editor.setSidebarTab(SidebarTabs.Table);
   }
+
+  openHotkeyPanel() {
+    this.editor.setSidebarTab(SidebarTabs.Hotkey);
+  }
 }
