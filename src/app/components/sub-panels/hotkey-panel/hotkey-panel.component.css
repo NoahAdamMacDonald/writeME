@@ -17,6 +17,7 @@
   padding-top: 1rem;
 }
 
+/* Back button */
 .back-btn {
   display: flex;
   align-items: center;
@@ -38,11 +39,22 @@
   height: 18px;
 }
 
-.section-label {
-  font-weight: bold;
-  margin-bottom: 0.25rem;
+/* Section container */
+.section {
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 0.75rem;
+  background: var(--bg-main);
 }
 
+/* Section label */
+.section-label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Input */
 .text-input {
   width: 100%;
   padding: 0.5rem;
@@ -50,53 +62,81 @@
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
+  margin-bottom: 0.75rem;
 }
 
-.dropdown-toggle {
-  width: 100%;
-  text-align: left;
-  padding: 0.5rem;
+/* Collapsible header */
+.section-header {
+  padding: 0.5rem 0.75rem;
   background: var(--btn-bg);
-  color: var(--text-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
   cursor: pointer;
-  margin-bottom: 0.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
 }
 
-.dropdown-toggle:hover {
+.section-header:hover {
   background: var(--btn-hover);
 }
 
-.hotkey-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  gap: 0.5rem;
-  padding: 0.5rem 0;
+.chevron {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+  opacity: 0.75;
 }
 
-.symbol-btn {
-  padding: 0.4rem;
-  background: var(--btn-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1.2rem;
+.section-header:not(.collapsed) .chevron {
+  transform: rotate(0deg);
+}
+
+.section-header.collapsed .chevron {
+  transform: rotate(-90deg);
+}
+
+/* Dropdown body */
+.hotkey-dropdown-body {
+  max-height: 250px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.75rem;
 }
 
-.symbol-btn:hover {
+/* Hotkey item */
+.hotkey-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--btn-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.hotkey-item:hover {
   background: var(--btn-hover);
 }
 
-.symbol-btn .name {
-  font-size: 0.7rem;
-  opacity: 0.7;
+.hotkey-symbol {
+  font-size: 1.3rem;
+  width: 32px;
+  text-align: center;
 }
 
+.hotkey-name {
+  color: var(--text-subtle);
+  font-size: 0.85rem;
+}
+
+/* Actions */
 .actions button {
   width: 100%;
   padding: 0.5rem 0.75rem;
@@ -125,6 +165,7 @@
   background: var(--danger-hover);
 }
 
+/* Warning */
 .warning-message {
   margin-top: 0.75rem;
   padding: 0.5rem 0.75rem;

@@ -12,49 +12,81 @@
     Back
   </button>
 
-  <label class="section-label">Insert Hotkey</label>
+  <div class="section">
 
-  <input
-    class="text-input"
-    placeholder="Hotkey text"
-    [(ngModel)]="text"
-  />
+    <label class="section-label">Insert Hotkey</label>
 
-  <div *ngFor="let group of hotkeyGroups" class="hotkey-group">
+    <input
+      class="text-input"
+      placeholder="Hotkey text"
+      [(ngModel)]="text"
+    />
 
-    <button
-      class="dropdown-toggle"
-      type="button"
-      data-bs-toggle="collapse"
-      [attr.data-bs-target]="'#group-' + sanitizeId(group.category)"
-    >
-      {{ group.category }}
-    </button>
+    <!-- HOTKEY CATEGORIES -->
+    <div *ngFor="let group of hotkeyGroups">
 
-    <div
-      class="collapse show"
-      [id]="'group-' + sanitizeId(group.category)"
-    >
-      <div class="hotkey-grid">
-        <button
-          class="symbol-btn"
-          *ngFor="let h of group.keys"
-          (click)="addSymbol(h.symbol)"
-        >
-          {{h.symbol}}
-          <span class="name">{{h.name}}</span>
-        </button>
+      <div class="section-header collapsed"
+           data-bs-toggle="collapse"
+           [attr.data-bs-target]="'#group-' + sanitizeId(group.category)"
+           aria-expanded="false">
+
+        <span>{{ group.category }}</span>
+
+        <svg class="chevron" viewBox="0 0 24 24">
+          <path d="M6 9l6 6 6-6"
+                stroke="currentColor"
+                stroke-width="2"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+        </svg>
       </div>
+
+      <div
+        class="collapse"
+        [id]="'group-' + sanitizeId(group.category)"
+      >
+        <div class="hotkey-dropdown-body">
+
+          <button
+            type="button"
+            class="hotkey-item"
+            *ngFor="let h of group.keys"
+            (click)="addSymbol(h.symbol)"
+          >
+            <span class="hotkey-symbol">{{h.symbol}}</span>
+            <span class="hotkey-name">{{h.name}}</span>
+          </button>
+
+        </div>
+      </div>
+
     </div>
 
   </div>
 
-  <div class="actions">
-    <button class="primary-btn" *ngIf="!editing" (click)="insert()">Insert</button>
-    <button class="primary-btn" *ngIf="editing" (click)="save()">Save</button>
-    <button class="danger-btn" *ngIf="editing" (click)="deleteExistingHotkey()">Delete</button>
+  <div *ngIf="showWarning" class="warning-message">
+    {{ warningMessage }}
   </div>
 
-  <div *ngIf="showWarning" class="warning-message">{{warningMessage}}</div>
+  <div class="section actions">
+    <button class="danger-btn"
+            *ngIf="editing"
+            (click)="deleteExistingHotkey()">
+      Delete
+    </button>
+
+    <button class="primary-btn"
+            *ngIf="editing"
+            (click)="save()">
+      Save
+    </button>
+
+    <button class="primary-btn"
+            *ngIf="!editing"
+            (click)="insert()">
+      Insert
+    </button>
+  </div>
 
 </div>
