@@ -1,0 +1,36 @@
+<div class="youtube-embed-panel">
+
+  <button class="back-btn" (click)="editor.setSidebarTab('edit')">
+    <svg class="back-icon" viewBox="0 0 24 24">
+      <path d="M15 6l-6 6 6 6"
+            stroke="currentColor"
+            stroke-width="2"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+    </svg>
+    Back
+  </button>
+
+  <label class="section-label">Embed YouTube Video</label>
+
+  <input
+    class="text-input"
+    placeholder="YouTube URL or Video ID"
+    [(ngModel)]="rawInput"
+    (input)="updatePreview()"
+  />
+
+  <div class="image-preview" *ngIf="previewUrl">
+    <img [src]="previewUrl" alt="Video Thumbnail" />
+  </div>
+
+  <div class="actions">
+    <button class="primary-btn" *ngIf="!editing" (click)="insert()">Insert</button>
+    <button class="primary-btn" *ngIf="editing" (click)="save()">Save</button>
+    <button class="danger-btn" *ngIf="editing" (click)="deleteExistingYoutubeEmbed()">Delete</button>
+  </div>
+
+  <div *ngIf="showWarning" class="warning-message">{{warningMessage}}</div>
+
+</div>
