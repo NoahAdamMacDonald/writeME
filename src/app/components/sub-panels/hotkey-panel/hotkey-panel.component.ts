@@ -17,7 +17,9 @@ export class HotkeyPanelComponent implements OnInit {
   editor = inject(EditorStateService);
 
   hotkeyGroups: HotkeyGroup[] = hotkeyData as HotkeyGroup[];
+  filteredGroups: HotkeyGroup[] = [];
 
+  searchTerm = '';
   text = '';
 
   editing = false;
@@ -33,6 +35,7 @@ export class HotkeyPanelComponent implements OnInit {
     setTimeout(() => (this.showWarning = false), 2000);
   }
 
+  //helper functions
   private validate(): boolean {
     if (!this.text.trim()) {
       this.showError('Hotkey text cannot be empty');
@@ -47,6 +50,20 @@ export class HotkeyPanelComponent implements OnInit {
       .replace(/\s+/g, '-')
       .replace(/[()]/g, '')
       .replace(/[^a-z0-9-]/g, '');
+  }
+
+  applySearch() {
+    const term = this.searchTerm.trim().toLowerCase();
+
+    if(!term) {
+      this.filteredGroups = this.hotkeyGroups;
+      return;
+    }
+
+    this.filteredGroups = this.hotkeyGroups.map(group=>({
+      ...group,
+      keys:group.keys.filter(key=>key.name.toLowerCase().includes(term) || key.symbol.toLowerCase().includes(term))
+    })).filter(group=>group.keys.length > 0);
   }
 
   addSymbol(symbol: string) {
@@ -131,6 +148,7 @@ export class HotkeyPanelComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.filteredGroups = this.hotkeyGroups;
     this.loadExistingHotkey();
   }
 }
