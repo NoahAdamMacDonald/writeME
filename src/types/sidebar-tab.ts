@@ -9,6 +9,7 @@ export const SidebarTabs = {
   YoutubeEmbed: 'youtube-embed',
   CodeBlock: 'code-block',
   Table: 'table',
+  Hotkey: 'hotkey'
 } as const;
 
 export type SidebarTab = (typeof SidebarTabs)[keyof typeof SidebarTabs];
