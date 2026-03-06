@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { SidebarTab } from '../../types/sidebar-tab';
+import { SidebarTab, SidebarTabs } from '../../types/sidebar-tab';
 
 import emojiData from '../../assets/emoji.json';
 
@@ -10,7 +10,7 @@ import emojiData from '../../assets/emoji.json';
 export class EditorStateService {
   private contentSubject = new BehaviorSubject<string>('');
 
-  sidebarTab = signal<SidebarTab>('file');
+  sidebarTab = signal<SidebarTab>(SidebarTabs.File);
 
   //Map for emoji conversion
   private codeToEmoji = new Map<string, string>();

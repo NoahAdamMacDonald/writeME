@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EditorStateService } from '../../services/editor-state.service';
 
+import { SidebarTab, SidebarTabs } from '../../../types/sidebar-tab';
+
 @Component({
   selector: 'app-edit-panel',
   standalone: true,
@@ -531,24 +533,24 @@ export class EditPanelComponent {
 
   //Link Section
   openLinkUrlPanel() {
-    this.editor.setSidebarTab('link-url');
+    this.editor.setSidebarTab(SidebarTabs.LinkUrl);
   }
 
   openLinkSectionPanel() {
-    this.editor.setSidebarTab('link-section');
+    this.editor.setSidebarTab(SidebarTabs.LinkSection);
   }
 
   openImageEmbedPanel() {
-    this.editor.setSidebarTab('image-embed');
+    this.editor.setSidebarTab(SidebarTabs.ImageEmbed);
   }
 
   openYoutubeEmbedPanel() {
-    this.editor.setSidebarTab('youtube-embed');
+    this.editor.setSidebarTab(SidebarTabs.YoutubeEmbed);
   }
 
   // Code section
   openCodeBlockPanel() {
-    this.editor.setSidebarTab('code-block');
+    this.editor.setSidebarTab(SidebarTabs.CodeBlock);
   }
 
   //Misc Section
@@ -610,10 +612,10 @@ export class EditPanelComponent {
   }
 
   openFoldablePanel() {
-    this.editor.setSidebarTab('foldable');
+    this.editor.setSidebarTab(SidebarTabs.Foldable);
   }
 
-  openTabelPanel() {
-    this.editor.setSidebarTab('table');
+  openTablePanel() {
+    this.editor.setSidebarTab(SidebarTabs.Table);
   }
 }
