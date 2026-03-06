@@ -41,6 +41,14 @@ export class HotkeyPanelComponent implements OnInit {
     return true;
   }
 
+  sanitizeId(str: string) {
+    return str
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[()]/g, '')
+      .replace(/[^a-z0-9-]/g, '');
+  }
+
   addSymbol(symbol: string) {
     this.text += symbol;
   }
@@ -110,8 +118,7 @@ export class HotkeyPanelComponent implements OnInit {
       const content = this.editor.content;
 
       const newContent =
-        content.slice(0, this.originalStart) +
-        content.slice(this.originalEnd);
+        content.slice(0, this.originalStart) + content.slice(this.originalEnd);
 
       return {
         newContent,

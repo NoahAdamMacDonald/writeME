@@ -26,14 +26,14 @@
       class="dropdown-toggle"
       type="button"
       data-bs-toggle="collapse"
-      [attr.data-bs-target]="'#group-' + group.category"
+      [attr.data-bs-target]="'#group-' + sanitizeId(group.category)"
     >
       {{ group.category }}
     </button>
 
     <div
       class="collapse show"
-      [id]="'group-' + group.category"
+      [id]="'group-' + sanitizeId(group.category)"
     >
       <div class="hotkey-grid">
         <button
