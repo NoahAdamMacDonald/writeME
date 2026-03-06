@@ -38,16 +38,16 @@
   </div>
 
   <div class="panel">
-    <app-file-panel *ngIf="editor.sidebarTab() === 'file'"></app-file-panel>
-    <app-edit-panel *ngIf="editor.sidebarTab() === 'edit'"></app-edit-panel>
-    <app-icon-panel *ngIf="editor.sidebarTab() === 'icons'"></app-icon-panel>
-    <app-foldable-panel *ngIf="editor.sidebarTab() === 'foldable'"></app-foldable-panel>
-    <app-link-url-panel *ngIf="editor.sidebarTab() === 'link-url'"></app-link-url-panel>
-    <app-link-section-panel *ngIf="editor.sidebarTab () === 'link-section'"></app-link-section-panel>
-    <app-image-embed-panel *ngIf="editor.sidebarTab() === 'image-embed'"></app-image-embed-panel>
-    <app-youtube-embed-panel *ngIf="editor.sidebarTab() === 'youtube-embed'"></app-youtube-embed-panel>
-    <app-code-block-panel *ngIf="editor.sidebarTab() === 'code-block'"></app-code-block-panel>
-    <app-table-panel *ngIf="editor.sidebarTab() === 'table'"></app-table-panel>
+    <app-file-panel *ngIf="editor.sidebarTab() === sidebarTabs.File"></app-file-panel>
+    <app-edit-panel *ngIf="editor.sidebarTab() === sidebarTabs.Edit"></app-edit-panel>
+    <app-icon-panel *ngIf="editor.sidebarTab() === sidebarTabs.Icons"></app-icon-panel>
+    <app-foldable-panel *ngIf="editor.sidebarTab() === sidebarTabs.Foldable"></app-foldable-panel>
+    <app-link-url-panel *ngIf="editor.sidebarTab() === sidebarTabs.LinkUrl"></app-link-url-panel>
+    <app-link-section-panel *ngIf="editor.sidebarTab () === sidebarTabs.LinkSection"></app-link-section-panel>
+    <app-image-embed-panel *ngIf="editor.sidebarTab() === sidebarTabs.ImageEmbed"></app-image-embed-panel>
+    <app-youtube-embed-panel *ngIf="editor.sidebarTab() === sidebarTabs.YoutubeEmbed"></app-youtube-embed-panel>
+    <app-code-block-panel *ngIf="editor.sidebarTab() === sidebarTabs.CodeBlock"></app-code-block-panel>
+    <app-table-panel *ngIf="editor.sidebarTab() === sidebarTabs.Table"></app-table-panel>
   </div>
 
 </div>

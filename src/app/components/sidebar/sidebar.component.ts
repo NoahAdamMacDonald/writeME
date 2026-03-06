@@ -1,6 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { SidebarTabs } from '../../../types/sidebar-tab';
+
 //Panels
 import { FilePanelComponent } from '../file-panel/file-panel.component';
 import { EditPanelComponent } from '../edit-panel/edit-panel.component';
@@ -31,13 +33,16 @@ import { EditorStateService } from '../../services/editor-state.service';
     CodeBlockPanelComponent,
     TablePanelComponent,
     ImageEmbedPanelComponent,
-    YoutubeEmbedPanelComponent
+    YoutubeEmbedPanelComponent,
 ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
   activeTab: 'file' | 'edit' | 'icons' = 'file';
+
+  //Sidebar Tabs added to be used in html
+  sidebarTabs = SidebarTabs;
 
   //Mobile Warning
   isSmallScreen = false;
