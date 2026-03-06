@@ -1,6 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { SidebarTab } from '../../types/sidebar-tab';
+
 import emojiData from '../../assets/emoji.json';
 
 
@@ -8,7 +10,7 @@ import emojiData from '../../assets/emoji.json';
 export class EditorStateService {
   private contentSubject = new BehaviorSubject<string>('');
 
-  sidebarTab = signal<'file' | 'edit' | 'icons' | 'foldable' | 'link-url' | 'link-section' | 'image-embed' | 'youtube-embed' | 'code-block' | 'table'>('file');
+  sidebarTab = signal<SidebarTab>('file');
 
   //Map for emoji conversion
   private codeToEmoji = new Map<string, string>();
@@ -79,7 +81,7 @@ export class EditorStateService {
   }
 
   //Panel handler
-  setSidebarTab(tab: 'file' | 'edit' | 'icons' | 'foldable' | 'link-url' | 'link-section' | 'image-embed' | 'youtube-embed' | 'code-block' | 'table') {
+  setSidebarTab(tab: SidebarTab) {
     this.sidebarTab.set(tab);
   }
 
