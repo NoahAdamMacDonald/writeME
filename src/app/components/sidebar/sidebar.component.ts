@@ -11,6 +11,7 @@ import { FoldablePanelComponent } from '../sub-panels/foldable-panel/foldable-pa
 import { LinkUrlPanelComponent } from '../sub-panels/link-url-panel/link-url-panel.component';
 import { LinkSectionPanelComponent } from '../sub-panels/link-section-panel/link-section-panel.component';
 import { ImageEmbedPanelComponent } from '../sub-panels/image-embed-panel/image-embed-panel.component';
+import { YoutubeEmbedPanelComponent } from '../sub-panels/youtube-embed-panel/youtube-embed-panel.component';
 import { CodeBlockPanelComponent } from '../sub-panels/code-block-panel/code-block-panel.component';
 import { TablePanelComponent } from '../sub-panels/table-panel/table-panel.component';
 
@@ -29,7 +30,8 @@ import { EditorStateService } from '../../services/editor-state.service';
     LinkSectionPanelComponent,
     CodeBlockPanelComponent,
     TablePanelComponent,
-    ImageEmbedPanelComponent
+    ImageEmbedPanelComponent,
+    YoutubeEmbedPanelComponent
 ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',

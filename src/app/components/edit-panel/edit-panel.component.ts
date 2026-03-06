@@ -542,6 +542,10 @@ export class EditPanelComponent {
     this.editor.setSidebarTab('image-embed');
   }
 
+  openYoutubeEmbedPanel() {
+    this.editor.setSidebarTab('youtube-embed');
+  }
+
   // Code section
   openCodeBlockPanel() {
     this.editor.setSidebarTab('code-block');
