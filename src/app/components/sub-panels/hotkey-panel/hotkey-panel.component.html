@@ -20,14 +20,33 @@
     [(ngModel)]="text"
   />
 
-  <div class="hotkey-grid">
+  <div *ngFor="let group of hotkeyGroups" class="hotkey-group">
+
     <button
-      class="symbol-btn"
-      *ngFor="let h of hotkeys"
-      (click)="addSymbol(h.symbol)"
+      class="dropdown-toggle"
+      type="button"
+      data-bs-toggle="collapse"
+      [attr.data-bs-target]="'#group-' + group.category"
     >
-      {{h.symbol}} <span class="name">{{h.name}}</span>
+      {{ group.category }}
     </button>
+
+    <div
+      class="collapse show"
+      [id]="'group-' + group.category"
+    >
+      <div class="hotkey-grid">
+        <button
+          class="symbol-btn"
+          *ngFor="let h of group.keys"
+          (click)="addSymbol(h.symbol)"
+        >
+          {{h.symbol}}
+          <span class="name">{{h.name}}</span>
+        </button>
+      </div>
+    </div>
+
   </div>
 
   <div class="actions">

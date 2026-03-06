@@ -3,13 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { EditorStateService } from '../../../services/editor-state.service';
+import hotkeyData from '../../../../assets/hotkey.json';
 
-import hotkeysData from '../../../../assets/hotkey.json';
-
-interface HotkeySymbol {
-  name: string;
-  symbol: string;
-}
+import { HotkeyGroup } from '../../../../types/hotkey';
 
 @Component({
   selector: 'app-hotkey-panel',
@@ -20,7 +16,8 @@ interface HotkeySymbol {
 export class HotkeyPanelComponent implements OnInit {
   editor = inject(EditorStateService);
 
-  hotkeys: HotkeySymbol[] = hotkeysData;
+  hotkeyGroups: HotkeyGroup[] = hotkeyData as HotkeyGroup[];
+
   text = '';
 
   editing = false;
@@ -113,7 +110,8 @@ export class HotkeyPanelComponent implements OnInit {
       const content = this.editor.content;
 
       const newContent =
-        content.slice(0, this.originalStart) + content.slice(this.originalEnd);
+        content.slice(0, this.originalStart) +
+        content.slice(this.originalEnd);
 
       return {
         newContent,

@@ -52,10 +52,27 @@
   border-radius: 4px;
 }
 
+.dropdown-toggle {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem;
+  background: var(--btn-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 0.25rem;
+}
+
+.dropdown-toggle:hover {
+  background: var(--btn-hover);
+}
+
 .hotkey-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   gap: 0.5rem;
+  padding: 0.5rem 0;
 }
 
 .symbol-btn {
