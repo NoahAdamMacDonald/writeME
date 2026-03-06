@@ -1,11 +1,14 @@
 <div class="layout">
-<div class="sidebar" [style.width.px]="sidebarWidth">
-  <app-sidebar></app-sidebar>
-</div>
+  <div class="sidebar" [style.width.px]="sidebarWidth">
+    <app-sidebar></app-sidebar>
+  </div>
 
-<div class="resize-handle"
-  (mousedown)="startResizing($event)">
-</div>
+  <div class="resize-handle"
+    (mousedown)="startResizing($event)">
+  </div>
 
-<app-editor class="editor"></app-editor>
+  <div class="editor-container">
+    <app-editor class="editor"></app-editor>
+    <app-footer></app-footer>
+  </div>
 </div>

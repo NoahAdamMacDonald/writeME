@@ -1,11 +1,12 @@
 import { Component, HostListener } from '@angular/core';
 import { SidebarComponent } from "../../components/sidebar/sidebar.component";
 import { EditorComponent } from "../../components/editor/editor.component";
+import { FooterComponent } from "../../components/footer/footer.component";
 
 @Component({
   selector: 'app-editor-page',
   standalone: true,
-  imports: [SidebarComponent, EditorComponent],
+  imports: [SidebarComponent, EditorComponent, FooterComponent],
   templateUrl: './editor-page.component.html',
   styleUrl: './editor-page.component.css',
 })
@@ -13,7 +14,7 @@ export class EditorPageComponent {
   sidebarWidth = 240;
   resizing = false;
 
-  
+
   startResizing(event: MouseEvent) {
     event.preventDefault();
     this.resizing = true;
