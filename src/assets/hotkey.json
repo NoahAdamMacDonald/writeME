@@ -2,63 +2,64 @@
   {
     "category": "Modifiers (macOS)",
     "keys": [
-      { "name": "Command", "symbol": "⌘" },
-      { "name": "Shift", "symbol": "⇧" },
-      { "name": "Option", "symbol": "⌥" },
-      { "name": "Control", "symbol": "⌃" },
-      { "name": "Caps Lock", "symbol": "⇪" }
+      { "name": "Command", "symbol": "⌘", "aliases": ["cmd", "command", "meta"] },
+      { "name": "Shift", "symbol": "⇧", "aliases": ["shift"] },
+      { "name": "Option", "symbol": "⌥", "aliases": ["opt", "option", "alt"] },
+      { "name": "Control", "symbol": "⌃", "aliases": ["control", "ctrl", "ctl"] },
+      { "name": "Caps Lock", "symbol": "⇪", "aliases": ["caps", "capslock"]}
     ]
   },
   {
     "category": "Modifiers (Windows)",
     "keys": [
-      { "name": "Ctrl", "symbol": "Ctrl" },
-      { "name": "Alt", "symbol": "Alt" },
-      { "name": "Shift", "symbol": "Shift" },
-      { "name": "Windows", "symbol": "⊞" }
+      { "name": "Ctrl", "symbol": "Ctrl", "aliases": ["control", "ctrl", "ctl"] },
+      { "name": "Alt", "symbol": "Alt", "aliases": ["alt", "option"] },
+      { "name": "Shift", "symbol": "Shift", "aliases": ["shift"] },
+      { "name": "Windows", "symbol": "⊞", "aliases": ["win", "windows", "super"]}
     ]
   },
   {
     "category": "Navigation",
     "keys": [
-      { "name": "Up", "symbol": "↑" },
-      { "name": "Down", "symbol": "↓" },
-      { "name": "Left", "symbol": "←" },
-      { "name": "Right", "symbol": "→" },
-      { "name": "Page Up", "symbol": "⇞" },
-      { "name": "Page Down", "symbol": "⇟" },
-      { "name": "Home", "symbol": "↖" },
-      { "name": "End", "symbol": "↘" }
+      { "name": "Up", "symbol": "↑", "aliases": ["up", "arrow up", "north"] },
+      { "name": "Down", "symbol": "↓", "aliases": ["down", "arrow down", "south"] },
+      { "name": "Left", "symbol": "←", "aliases": ["left", "arrow left", "west"] },
+      { "name": "Right", "symbol": "→", "aliases": ["right", "arrow right", "east"] },
+      { "name": "Page Up", "symbol": "⇞", "aliases": ["pgup", "pageup"] },
+      { "name": "Page Down", "symbol": "⇟", "aliases": ["pgdown", "pagedown"] },
+      { "name": "Home", "symbol": "↖", "aliases": ["home", "start"] },
+      { "name": "End", "symbol": "↘", "aliases": ["end", "finish"]}
     ]
   },
   {
     "category": "Special Keys",
     "keys": [
-      { "name": "Tab", "symbol": "⇥" },
-      { "name": "Backtab", "symbol": "⇤" },
-      { "name": "Return", "symbol": "↩" },
-      { "name": "Enter", "symbol": "⏎" },
-      { "name": "Delete", "symbol": "⌫" },
-      { "name": "Forward Delete", "symbol": "⌦" },
-      { "name": "Escape", "symbol": "⎋" },
-      { "name": "Power", "symbol": "⌽" }
+      { "name": "Tab", "symbol": "⇥", "aliases": ["tab"] },
+      { "name": "Backtab", "symbol": "⇤", "aliases": ["backtab", "shift tab"] },
+      { "name": "Return", "symbol": "↩", "aliases": ["return", "enter"] },
+      { "name": "Enter", "symbol": "⏎", "aliases": ["enter", "return"] },
+      { "name": "Delete", "symbol": "⌫", "aliases": ["delete", "backspace"] },
+      { "name": "Forward Delete", "symbol": "⌦", "aliases": ["forward delete", "del"] },
+      { "name": "Escape", "symbol": "⎋", "aliases": ["esc", "escape"] },
+      { "name": "Power", "symbol": "⌽", "aliases": ["power"]}
     ]
   },
   {
     "category": "Function Keys",
     "keys": [
-      { "name": "F1", "symbol": "F1" },
-      { "name": "F2", "symbol": "F2" },
-      { "name": "F3", "symbol": "F3" },
-      { "name": "F4", "symbol": "F4" },
-      { "name": "F5", "symbol": "F5" },
-      { "name": "F6", "symbol": "F6" },
-      { "name": "F7", "symbol": "F7" },
-      { "name": "F8", "symbol": "F8" },
-      { "name": "F9", "symbol": "F9" },
-      { "name": "F10", "symbol": "F10" },
-      { "name": "F11", "symbol": "F11" },
-      { "name": "F12", "symbol": "F12" }
+      { "name": "F1", "symbol": "F1", "aliases": ["f1"] },
+      { "name": "F2", "symbol": "F2", "aliases": ["f2"] },
+      { "name": "F3", "symbol": "F3", "aliases": ["f3"] },
+      { "name": "F4", "symbol": "F4", "aliases": ["f4"] },
+      { "name": "F5", "symbol": "F5", "aliases": ["f5"] },
+      { "name": "F6", "symbol": "F6", "aliases": ["f6"] },
+      { "name": "F7", "symbol": "F7", "aliases": ["f7"] },
+      { "name": "F8", "symbol": "F8", "aliases": ["f8"] },
+      { "name": "F9", "symbol": "F9", "aliases": ["f9"] },
+      { "name": "F10", "symbol": "F10", "aliases": ["f10"] },
+      { "name": "F11", "symbol": "F11", "aliases": ["f11"] },
+      { "name": "F12", "symbol": "F12", "aliases": ["f12"]}
     ]
   }
 ]
+
