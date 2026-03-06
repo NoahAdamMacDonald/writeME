@@ -1,15 +1,64 @@
 [
-    { "name": "Option", "symbol": "⌥" },
-    { "name": "Control", "symbol": "⌃" },
-    { "name": "Command", "symbol": "⌘" },
-    { "name": "Shift", "symbol": "⇧" },
-    { "name": "Caps Lock", "symbol": "⇪" },
-    { "name": "Tab", "symbol": "⇥" },
-    { "name": "Esc", "symbol": "⎋" },
-    { "name": "Power", "symbol": "⌽" },
-    { "name": "Return", "symbol": "↩" },
-    { "name": "Up", "symbol": "↑" },
-    { "name": "Down", "symbol": "↓" },
-    { "name": "Left", "symbol": "←" },
-    { "name": "Right", "symbol": "→" }
+  {
+    "category": "Modifiers (macOS)",
+    "keys": [
+      { "name": "Command", "symbol": "⌘" },
+      { "name": "Shift", "symbol": "⇧" },
+      { "name": "Option", "symbol": "⌥" },
+      { "name": "Control", "symbol": "⌃" },
+      { "name": "Caps Lock", "symbol": "⇪" }
+    ]
+  },
+  {
+    "category": "Modifiers (Windows)",
+    "keys": [
+      { "name": "Ctrl", "symbol": "Ctrl" },
+      { "name": "Alt", "symbol": "Alt" },
+      { "name": "Shift", "symbol": "Shift" },
+      { "name": "Windows", "symbol": "⊞" }
+    ]
+  },
+  {
+    "category": "Navigation",
+    "keys": [
+      { "name": "Up", "symbol": "↑" },
+      { "name": "Down", "symbol": "↓" },
+      { "name": "Left", "symbol": "←" },
+      { "name": "Right", "symbol": "→" },
+      { "name": "Page Up", "symbol": "⇞" },
+      { "name": "Page Down", "symbol": "⇟" },
+      { "name": "Home", "symbol": "↖" },
+      { "name": "End", "symbol": "↘" }
+    ]
+  },
+  {
+    "category": "Special Keys",
+    "keys": [
+      { "name": "Tab", "symbol": "⇥" },
+      { "name": "Backtab", "symbol": "⇤" },
+      { "name": "Return", "symbol": "↩" },
+      { "name": "Enter", "symbol": "⏎" },
+      { "name": "Delete", "symbol": "⌫" },
+      { "name": "Forward Delete", "symbol": "⌦" },
+      { "name": "Escape", "symbol": "⎋" },
+      { "name": "Power", "symbol": "⌽" }
+    ]
+  },
+  {
+    "category": "Function Keys",
+    "keys": [
+      { "name": "F1", "symbol": "F1" },
+      { "name": "F2", "symbol": "F2" },
+      { "name": "F3", "symbol": "F3" },
+      { "name": "F4", "symbol": "F4" },
+      { "name": "F5", "symbol": "F5" },
+      { "name": "F6", "symbol": "F6" },
+      { "name": "F7", "symbol": "F7" },
+      { "name": "F8", "symbol": "F8" },
+      { "name": "F9", "symbol": "F9" },
+      { "name": "F10", "symbol": "F10" },
+      { "name": "F11", "symbol": "F11" },
+      { "name": "F12", "symbol": "F12" }
+    ]
+  }
 ]
