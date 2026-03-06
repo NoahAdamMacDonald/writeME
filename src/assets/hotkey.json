@@ -1,0 +1,15 @@
+[
+    { "name": "Option", "symbol": "⌥" },
+    { "name": "Control", "symbol": "⌃" },
+    { "name": "Command", "symbol": "⌘" },
+    { "name": "Shift", "symbol": "⇧" },
+    { "name": "Caps Lock", "symbol": "⇪" },
+    { "name": "Tab", "symbol": "⇥" },
+    { "name": "Esc", "symbol": "⎋" },
+    { "name": "Power", "symbol": "⌽" },
+    { "name": "Return", "symbol": "↩" },
+    { "name": "Up", "symbol": "↑" },
+    { "name": "Down", "symbol": "↓" },
+    { "name": "Left", "symbol": "←" },
+    { "name": "Right", "symbol": "→" }
+]
