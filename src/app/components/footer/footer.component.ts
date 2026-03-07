@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-footer',
   standalone: true,
@@ -10,28 +11,34 @@ import { CommonModule } from '@angular/common';
 export class FooterComponent implements OnInit {
   isDarkMode = true;
 
+
   ngOnInit(): void {
     const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    if (saved === 'dark') {
-      this.isDarkMode = true;
-    } else if (saved === 'light') {
-      this.isDarkMode = false;
-    } else {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      this.isDarkMode = mediaQuery.matches;
-    }
+    this.isDarkMode = saved === 'dark' || (!saved && prefersDark);
 
     this.applyTheme();
+    this.applyHighlightTheme();
   }
 
-  applyTheme() {
+  private applyTheme() {
     document.body.classList.toggle('dark-mode', this.isDarkMode);
+  }
+
+  private applyHighlightTheme() {
+    const link = document.getElementById('hljs-theme') as HTMLLinkElement;
+
+    if(link) {
+      link.href = this.isDarkMode ? 'assets/hljs/github-dark.css' : 'assets/hljs/github.css';
+    }
   }
 
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+
     this.applyTheme();
+    this.applyHighlightTheme();
   }
 }
