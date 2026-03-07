@@ -3,9 +3,6 @@
   --accent-light: color-mix(in srgb, var(--accent) 40%, white 60%);
   --accent-dark: color-mix(in srgb, var(--accent) 60%, black 40%);
 
-  --header-gradient-end: color-mix(in srgb, var(--header-bg) 80%, var(--accent) 20%);
-  --header-gradient-hover-end: color-mix(in srgb, var(--header-bg-hover) 65%, var(--accent) 35%);
-
   --button-hover: color-mix(in srgb, var(--panel-bg-hover) 70%, var(--accent) 30%);
   --shadow-soft: 0 4px 14px rgba(0,0,0,0.12);
   --shadow-button: 0 3px 10px rgba(0,0,0,0.15);
@@ -28,7 +25,7 @@
   border: 1px solid var(--divider);
   border-radius: 8px;
   overflow: hidden;
-  background: var(--header-bg);
+  background: var(--bg-main);
   transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
 }
 
@@ -41,7 +38,7 @@
 .section-header {
   padding: 0.9rem 1.2rem;
   margin: 0;
-  background: linear-gradient(to right, var(--header-bg), var(--header-gradient-end));
+  background: var(--bg-main);
   border-left: 4px solid var(--accent);
   cursor: pointer;
   display: flex;
@@ -54,7 +51,6 @@
 }
 
 .section-header:hover {
-  background: linear-gradient(to right, var(--header-bg), var(--header-gradient-end));
   color: var(--accent);
 }
 
@@ -87,14 +83,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
-  background: var(--header-bg);
+  background: var(--bg-sidebar);
 }
 
 button {
   padding: 0.5rem 0.85rem;
   border-radius: 6px;
   border: 1px solid var(--divider);
-  background: var(--header-bg);
+  background: var(--bg-sidebar);
   color: var(--text-main);
   cursor: pointer;
   font-size: 0.9rem;
