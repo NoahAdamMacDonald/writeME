@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EditorStateService } from '../../services/editor-state.service';
 
-import { SidebarTab, SidebarTabs } from '../../../types/sidebar-tab';
+import { SidebarTabs } from '../../../types/sidebar-tab';
 
 @Component({
   selector: 'app-edit-panel',
@@ -23,6 +23,18 @@ export class EditPanelComponent {
     setTimeout(() => (this.showWarning = false), 2000);
   }
 
+  /**
+   * Apply a markdown transformation to the selected text.
+   *
+   * If there is no selection, it will apply the transformation to the
+   * current line. If there is no text currently selected, it will
+   * search for the last known position of the cursor and apply
+   * the transformation to the line containing that position.
+   *
+   * @param transform A function that takes the content, start and end
+   * of the selection and returns the new content, start and end.
+   * @returns The result of applying the transformation to the content.
+   */
   private applyMarkdownAction(
     transform: (
       content: string,
@@ -70,6 +82,18 @@ export class EditPanelComponent {
   }
 
   // MARKDOWN ACTIONS
+
+  /**
+   * Apply a markdown transformation to the selected text.
+   *
+   * If there is no selection, it will apply the transformation to the
+   * current line. If there is no text currently selected, it will
+   * search for the last known position of the cursor and apply
+   * the transformation to the line containing that position.
+   *
+   * @param wrapper The markdown wrapper to apply to the selection.
+   * @returns The result of applying the transformation to the content.
+   */
   wrap(wrapper: string) {
     this.applyMarkdownAction((content, start, end) => {
       const selected = content.slice(start, end);
