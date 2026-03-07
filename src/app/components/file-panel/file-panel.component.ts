@@ -10,7 +10,7 @@ import { EditorStateService } from '../../services/editor-state.service';
   styleUrl: './file-panel.component.css'
 })
 export class FilePanelComponent {
-  editorStateService = inject(EditorStateService);
+  editor = inject(EditorStateService);
 
   successMessage = '';
   showSuccess = false;
@@ -37,9 +37,9 @@ export class FilePanelComponent {
     const reader = new FileReader();
     reader.onload=()=>{
       const text = reader.result as string;
-      const converted = this.editorStateService.convertCodeToEmoji(text);
+      const converted = this.editor.convertCodeToEmoji(text);
 
-      this.editorStateService.setContent(converted);
+      this.editor.setContent(converted);
 
       this.showConfirmation(`File imported Successfully: ${file.name}`);
     };
@@ -48,8 +48,8 @@ export class FilePanelComponent {
 
   //Export Handling
   exportFile() {
-    const raw = this.editorStateService.content;
-    const converted = this.editorStateService.convertEmojiToCode(raw);
+    const raw = this.editor.content;
+    const converted = this.editor.convertEmojiToCode(raw);
 
     const blob = new Blob([converted], {type: 'text/markdown'});
     const url= URL.createObjectURL(blob);
@@ -65,8 +65,8 @@ export class FilePanelComponent {
 
   //Clipboard Handling
   async copyToClipboard() {
-    const raw = this.editorStateService.content;
-    const converted = this.editorStateService.convertEmojiToCode(raw);
+    const raw = this.editor.content;
+    const converted = this.editor.convertEmojiToCode(raw);
 
     await navigator.clipboard.writeText(converted);
 
