@@ -482,6 +482,7 @@ On Export / Copy To Clipboard all emojis are converted to their emoji code text.
 On Import all emoji code are converted to emojis for easy use in editor.
 
 example: 
+
 :grinning: exported to `:grinning:`
 
 `:grinning:` imported to :grinning:
