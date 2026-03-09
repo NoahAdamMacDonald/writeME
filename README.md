@@ -99,7 +99,7 @@ Example:
 
 ## Alerts
 Click to apply 1 of 6 different alert or quote options to the current
-line of text or highlighted text to apply multiple lines at once.
+line of text or highlighted text to apply mulitple lines at once.
 
 Supports
 
@@ -280,10 +280,11 @@ main = print (square 5)
 And Much More
 
 
-WriteME uses highlight.js for its languages, due to this there are cases where
-highlight may support a languages that GitHub does not have highlighting for or
-where the names are different, highlight.js does not have a dedicated html tag, in this case XML
-is the compatible one between the two. I am looking into a possible fix for the future.
+> [!WARNING]
+> WriteME uses highlight.js for its languages, due to this there are cases where
+> highlight may support a lanaguges that GitHub does not have highlighting for or
+> where the names are different, highlight.js does not have a dedicated html tag, in this case XML
+> is the compatible one between the two. I am looking into a possible fix for the future.
 
 
 - - - -
