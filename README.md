@@ -282,7 +282,7 @@ And Much More
 
 > [!WARNING]
 > WriteME uses highlight.js for its languages, due to this there are cases where
-> highlight may support a lanaguges that GitHub does not have highlighting for or
+> highlight may support a language that GitHub does not have highlighting for or
 > where the names are different, highlight.js does not have a dedicated html tag, in this case XML
 > is the compatible one between the two. I am looking into a possible fix for the future.
 
