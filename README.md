@@ -299,7 +299,7 @@ Provide a url and link text to insert a link
 
 > [!TIP]
 > If no http or https is provided, it defaults to adding https.
-> If not TLD is provided, defaults to .com
+> If no TLD is provided, defaults to .com
 
 [example](https://noah-macdonald.com)
 
@@ -388,6 +388,15 @@ Defaults to Left aligned, click on the alignment button to toggle alignment
 | Hello | World | . |
 |  | a |  |
 | Some Things  | Can be  | Blank |
+
+```plaintext
+| Header | Header | Header |
+| :--- | :---: | ---: |
+| Hello | World | . |
+|  | a |  |
+| Some Things  | Can be  | Blank |
+```
+
 
 
 ### Hotkey
