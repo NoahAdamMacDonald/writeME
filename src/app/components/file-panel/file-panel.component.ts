@@ -2,18 +2,40 @@ import { Component, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EditorStateService } from '../../services/editor-state.service';
 
+import { AiService } from '../../services/ai.service';
+import { OcrService } from '../../services/ocr.service';
+
 @Component({
   selector: 'app-file-panel',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './file-panel.component.html',
-  styleUrl: './file-panel.component.css'
+  styleUrl: './file-panel.component.css',
 })
 export class FilePanelComponent {
   editor = inject(EditorStateService);
+  ai = inject(AiService);
+  ocr = inject(OcrService);
 
   successMessage = '';
   showSuccess = false;
+
+  //helper functions
+  private pickImage(): Promise<File> {
+    return new Promise((resolve, reject) => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+
+      input.onchange = () => {
+        const file = input.files?.[0];
+        if (!file) reject('No file selected');
+        else resolve(file);
+      };
+
+      input.click();
+    });
+  }
 
   private showConfirmation(message: string) {
     this.successMessage = message;
@@ -32,10 +54,10 @@ export class FilePanelComponent {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
 
-    if(!file) return;
+    if (!file) return;
 
     const reader = new FileReader();
-    reader.onload=()=>{
+    reader.onload = () => {
       const text = reader.result as string;
       const converted = this.editor.convertCodeToEmoji(text);
 
@@ -51,8 +73,8 @@ export class FilePanelComponent {
     const raw = this.editor.content;
     const converted = this.editor.convertEmojiToCode(raw);
 
-    const blob = new Blob([converted], {type: 'text/markdown'});
-    const url= URL.createObjectURL(blob);
+    const blob = new Blob([converted], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
     a.href = url;
@@ -71,5 +93,40 @@ export class FilePanelComponent {
     await navigator.clipboard.writeText(converted);
 
     this.showConfirmation('Content copied to clipboard');
+  }
+
+  //AI features
+  async formatWithAI() {
+    try {
+      const raw = this.editor.content;
+      const markdown = await this.ai.formatToMarkdown(raw);
+      this.editor.setContent(markdown);
+      this.showConfirmation('Content formatted with AI');
+    } catch (error: any) {
+      this.showConfirmation(error.message);
+    }
+  }
+
+  async ocrImage() {
+    try {
+      const file = await this.pickImage();
+      const text = await this.ocr.extractText(file);
+      this.editor.setContent(text);
+      this.showConfirmation('OCR complete');
+    } catch (err: any) {
+      this.showConfirmation('OCR failed');
+    }
+  }
+
+  async ocrAndFormat() {
+    try {
+      const file = await this.pickImage();
+      const text = await this.ocr.extractText(file);
+      const markdown = await this.ai.formatToMarkdown(text);
+      this.editor.setContent(markdown);
+      this.showConfirmation('OCR → Markdown complete');
+    } catch (err: any) {
+      this.showConfirmation('OCR → Markdown failed');
+    }
   }
 }
