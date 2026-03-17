@@ -47,12 +47,19 @@ JSON
 - Pretty-print JSON with 2-space indentation.
 
 TABLES
-- Output exactly ONE GitHub-style Markdown table.
-- Use:
-  | Column | Column |
-  | :--- | :--- |
-  | row | row |
-- Never output multiple versions of a table.
+- When the text implies a table, output exactly ONE table.
+- The table MUST use GitHub-style Markdown.
+- The header row MUST come first.
+- The alignment row MUST come second.
+- The alignment row MUST use colons, like:
+  | :--- | :--- | :--- |
+- Every data row MUST come after the alignment row.
+- Every row MUST begin and end with a pipe.
+- Do NOT use compact tables like "a | b | c".
+- Do NOT reorder rows.
+- Do NOT add headings, labels, or commentary before or after the table.
+
+
 
 OUTPUT RULES
 - Output ONLY the final formatted Markdown.
