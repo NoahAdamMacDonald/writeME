@@ -86,7 +86,7 @@ export class FilePanelComponent {
       const markdown = await this.ai.formatToMarkdown(raw);
 
       this.editor.saveLastAiFormatted(markdown);
-      this.editor.setContent(markdown);
+      this.editor.setContent(markdown, true);
 
       this.showConfirmation('Content formatted with AI');
     } catch (error: any) {
@@ -106,7 +106,7 @@ export class FilePanelComponent {
       );
 
       this.editor.saveLastAiFormatted(markdown);
-      this.editor.setContent(markdown);
+      this.editor.setContent(markdown, true);
 
       this.showConfirmation('Formatting regenerated');
     } catch {

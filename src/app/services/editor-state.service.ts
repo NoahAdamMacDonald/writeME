@@ -31,10 +31,17 @@ export class EditorStateService {
   lastKnownLine = 1;
 
   //Editor handler
-  setContent(value: string) {
+  setContent(value: string, fromAI = false) {
+    const isManual = !fromAI && value !== this.content;
+
     this.content = value;
     this.contentSubject.next(value);
     localStorage.setItem('editorContent', value);
+
+    if (isManual) {
+      this.originalBeforeFormat = null;
+      this.lastAiFormatted = null;
+    }
   }
 
   updateSelection(start: number, end: number) {
@@ -120,7 +127,7 @@ export class EditorStateService {
 
   revertToOriginal() {
     if (this.originalBeforeFormat !== null) {
-      this.setContent(this.originalBeforeFormat);
+      this.setContent(this.originalBeforeFormat, true);
       this.originalBeforeFormat = null;
       this.lastAiFormatted = null;
     }
