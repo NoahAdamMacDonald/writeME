@@ -44,21 +44,23 @@
       Format with AI
     </button>
 
-    <button (click)="regenerateFormatting()">
-      <svg class="icon" viewBox="0 0 24 24">
-        <path fill="currentColor"
-          d="M17.65 6.35A7.95 7.95 0 0012 4a8 8 0 108 8h-2a6 6 0 11-6-6c1.66 0 3.14.67 4.24 1.76L14 11h6V5l-2.35 2.35z"/>
-      </svg>
-      Regenerate
-    </button>
-
-    <button (click)="revertFormatting()">
-      <svg class="icon" viewBox="0 0 24 24">
-        <path fill="currentColor"
-          d="M12 5c-4.42 0-8 3.58-8 8H2l3.89 3.89L9.78 13H6c0-3.31 2.69-6 6-6s6 2.69 6 6-2.69 6-6 6v2c4.42 0 8-3.58 8-8s-3.58-8-8-8z"/>
+    <div class="ai-inline-row">
+      <button (click)="regenerateFormatting()">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path fill="currentColor"
+            d="M17.65 6.35A7.95 7.95 0 0012 4a8 8 0 108 8h-2a6 6 0 11-6-6c1.66 0 3.14.67 4.24 1.76L14 11h6V5l-2.35 2.35z"/>
         </svg>
-      Revert
-    </button>
+        Regenerate
+      </button>
+
+      <button (click)="revertFormatting()">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path fill="currentColor"
+            d="M12 5c-4.42 0-8 3.58-8 8H2l3.89 3.89L9.78 13H6c0-3.31 2.69-6 6-6s6 2.69 6 6-2.69 6-6 6v2c4.42 0 8-3.58 8-8s-3.58-8-8-8z"/>
+        </svg>
+        Revert
+      </button>
+    </div>
 
     <div class="powered-by">
       Powered by Groq

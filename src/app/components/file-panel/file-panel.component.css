@@ -82,6 +82,16 @@
   border-color: var(--btn-bg-hover);
 }
 
+.ai-inline-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ai-inline-row button {
+  flex: 1;
+}
+
+
 .powered-by {
   margin-top: 0.25rem;
   font-size: 0.75rem;
