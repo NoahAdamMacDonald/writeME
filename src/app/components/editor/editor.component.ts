@@ -10,6 +10,9 @@ import { CommonModule } from '@angular/common';
 
 import { EditorStateService } from '../../services/editor-state.service';
 import { TextEditingService } from '../../services/text-editing.service';
+import { SettingsService } from '../../services/settings.service';
+
+import hljs from 'highlight.js';
 
 @Component({
   selector: 'app-editor',
@@ -23,8 +26,11 @@ export class EditorComponent implements OnInit {
 
   editorState = inject(EditorStateService);
   textEdit = inject(TextEditingService);
+  settings = inject(SettingsService);
 
   content = '';
+  highlightedContent = '';
+
   lines: number[] = [1];
   activeLine = 1;
 
@@ -37,6 +43,7 @@ export class EditorComponent implements OnInit {
     this.editorState.content$.subscribe((content) => {
       this.content = content;
       this.updateLines();
+      this.updateHighlighting();
 
       setTimeout(() => {
         const ta = this.textarea?.nativeElement;
@@ -46,6 +53,7 @@ export class EditorComponent implements OnInit {
         ta.selectionEnd = this.editorState.selectionEnd;
       });
     });
+    this.updateHighlighting();
   }
 
   private editorHasFocus(): boolean {
@@ -83,6 +91,8 @@ export class EditorComponent implements OnInit {
     this.updateLines();
     this.updateActiveLine(event);
     this.updateSelection(event);
+
+    this.updateHighlighting();
   }
 
   onClick(event: any) {
@@ -120,6 +130,8 @@ export class EditorComponent implements OnInit {
     this.editorState.setContent(this.content);
     localStorage.setItem('editorContent', this.content);
 
+    this.updateHighlighting();
+
     setTimeout(() => {
       ta.selectionStart = result.newStart;
       ta.selectionEnd = result.newEnd;
@@ -132,9 +144,38 @@ export class EditorComponent implements OnInit {
 
   syncScroll(event: any) {
     const ta = event.target as HTMLElement;
+    const pre = ta.previousElementSibling as HTMLElement;
+
+    if(pre) {
+      pre.scrollTop = ta.scrollTop;
+      pre.scrollLeft = ta.scrollLeft;
+    }
+
     const lineNumbers = document.querySelector('.line-numbers') as HTMLElement;
     if (lineNumbers) {
       lineNumbers.scrollTop = ta.scrollTop;
+    }
+  }
+
+  //Highlighting
+  updateHighlighting() {
+    if (!this.settings.editorHighlighting) {
+      try {
+        this.highlightedContent = hljs.highlight(this.content, {
+          language: 'plaintext',
+        }).value;
+      } catch {
+        this.highlightedContent = this.content;
+      }
+      return;
+    }
+
+    try {
+      this.highlightedContent = hljs.highlight(this.content, {
+        language: 'markdown',
+      }).value;
+    } catch {
+      this.highlightedContent = this.content;
     }
   }
 }

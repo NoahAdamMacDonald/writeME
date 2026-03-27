@@ -1,4 +1,5 @@
 <div class="editor-container">
+
   <div class="line-numbers">
     <div *ngFor="let line of lines; let i = index"
          [class.active]="i + 1 === activeLine">
@@ -6,15 +7,33 @@
     </div>
   </div>
 
-  <textarea
-    #textarea
-    class="editor-input"
-    [(ngModel)]="content"
-    (input)="onInput($event)"
-    (click)="onClick($event)"
-    (keyup)="onKeyUp($event)"
-    (scroll)="syncScroll($event)"
-    (keydown)="onKeyDown($event)"
-    spellcheck="false"
-  ></textarea>
+  <div class="editor-wrapper">
+
+    <!-- Highlight layer -->
+    <pre
+      class="editor-highlight hljs"
+      [innerHTML]="highlightedContent"
+      *ngIf="settings.editorHighlighting">
+    </pre>
+
+    <!--PlainText layer-->
+    <pre
+      class="editor-highlight hljs"
+      *ngIf="!settings.editorHighlighting"
+      >{{ content }}</pre>
+
+
+    <!-- Editable layer -->
+    <textarea
+      #textarea
+      class="editor-input"
+      [(ngModel)]="content"
+      (input)="onInput($event)"
+      (click)="onClick($event)"
+      (keyup)="onKeyUp($event)"
+      (scroll)="syncScroll($event)"
+      (keydown)="onKeyDown($event)"
+      spellcheck="false"
+    ></textarea>
+  </div>
 </div>
