@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { EditorStateService } from '../../services/editor-state.service';
 
 import { AiService } from '../../services/ai.service';
-import { OcrService } from '../../services/ocr.service';
 
 @Component({
   selector: 'app-file-panel',
@@ -15,7 +14,6 @@ import { OcrService } from '../../services/ocr.service';
 export class FilePanelComponent {
   editor = inject(EditorStateService);
   ai = inject(AiService);
-  ocr = inject(OcrService);
 
   successMessage = '';
   showSuccess = false;
@@ -104,29 +102,6 @@ export class FilePanelComponent {
       this.showConfirmation('Content formatted with AI');
     } catch (error: any) {
       this.showConfirmation(error.message);
-    }
-  }
-
-  async ocrImage() {
-    try {
-      const file = await this.pickImage();
-      const text = await this.ocr.extractText(file);
-      this.editor.setContent(text);
-      this.showConfirmation('OCR complete');
-    } catch (err: any) {
-      this.showConfirmation('OCR failed');
-    }
-  }
-
-  async ocrAndFormat() {
-    try {
-      const file = await this.pickImage();
-      const text = await this.ocr.extractText(file);
-      const markdown = await this.ai.formatToMarkdown(text);
-      this.editor.setContent(markdown);
-      this.showConfirmation('OCR → Markdown complete');
-    } catch (err: any) {
-      this.showConfirmation('OCR → Markdown failed');
     }
   }
 }
