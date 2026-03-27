@@ -2,6 +2,11 @@
   --success-text: #d4edda;
   --success-bg: #155724;
   --success-border: #4cff4c;
+
+  --danger-bg: #721c24;
+  --danger-text: #ffdddd;
+  --danger-border: #aa4444;
+  --danger-hover: #7a1a1a;
 }
 
 .file-panel {
@@ -99,7 +104,7 @@
   text-align: right;
 }
 
-/*Success Message*/
+/*Response Messages*/
 .confirmation {
   margin-top: 0.75rem;
   padding: 0.5rem 0.75rem;
@@ -110,6 +115,18 @@
   font-size: 0.85rem;
   animation: fadeInOut 2s ease forwards;
 }
+
+.warning-message {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border-left: 4px solid var(--danger-border);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  animation: fadeInOut 2s ease forwards;
+}
+
 @keyframes fadeInOut {
   0%   { opacity: 0; transform: translateY(4px); }
   10%  { opacity: 1; transform: translateY(0); }

@@ -18,6 +18,9 @@ export class FilePanelComponent {
   successMessage = '';
   showSuccess = false;
 
+  warningMessage = '';
+  showWarning = false;
+
   //helper functions
   private showConfirmation(message: string) {
     this.successMessage = message;
@@ -25,6 +28,12 @@ export class FilePanelComponent {
     setTimeout(() => {
       this.showSuccess = false;
     }, 2000);
+  }
+
+  private showError(msg: string) {
+    this.warningMessage = msg;
+    this.showWarning = true;
+    setTimeout(() => (this.showWarning = false), 2000);
   }
 
   //Import Handling
@@ -90,14 +99,14 @@ export class FilePanelComponent {
 
       this.showConfirmation('Content formatted with AI');
     } catch (error: any) {
-      this.showConfirmation(error.message);
+      this.showError(error.message);
     }
   }
 
   async regenerateFormatting() {
     try {
       if (!this.editor.originalBeforeFormat) {
-        this.showConfirmation('No original content to regenerate from');
+        this.showError('No original content to regenerate from');
         return;
       }
 
@@ -110,13 +119,13 @@ export class FilePanelComponent {
 
       this.showConfirmation('Formatting regenerated');
     } catch {
-      this.showConfirmation('Failed to regenerate formatting');
+      this.showError('Failed to regenerate formatting');
     }
   }
 
   revertFormatting() {
     if (!this.editor.originalBeforeFormat) {
-      this.showConfirmation('Nothing to revert');
+      this.showError('Nothing to revert');
       return;
     }
 
