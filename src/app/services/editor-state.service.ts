@@ -20,6 +20,10 @@ export class EditorStateService {
 
   content = '';
 
+  //AI format content
+  originalBeforeFormat: string | null = null;
+  lastAiFormatted: string | null = null;
+
   selectionStart = 0;
   selectionEnd = 0;
 
@@ -100,6 +104,25 @@ export class EditorStateService {
     if (saved) {
       this.content = saved;
       this.contentSubject.next(saved);
+    }
+  }
+
+  //AI Helpers
+  saveOriginalBeforeFormat() {
+    if (this.originalBeforeFormat === null) {
+      this.originalBeforeFormat = this.content;
+    }
+  }
+
+  saveLastAiFormatted(value: string) {
+    this.lastAiFormatted = value;
+  }
+
+  revertToOriginal() {
+    if (this.originalBeforeFormat !== null) {
+      this.setContent(this.originalBeforeFormat);
+      this.originalBeforeFormat = null;
+      this.lastAiFormatted = null;
     }
   }
 }
