@@ -28,6 +28,8 @@ My Links
 | Resizable Sidebar Menu | :white_check_mark: |
 | Tab / Shift+Tab | :white_check_mark: |
 | Syntax Highlighting For 193 Languages | :white_check_mark: |
+| AI Auto Formatting | :white_check_mark: |
+| In Editor Highlighting | :white_check_mark: |
 
 
 
@@ -41,7 +43,13 @@ The file panel is used for
 1. importing .md and .txt files to the writeME editor
 2. Exporting to file with 'README.md' as the default
 3. Copying the content of the editor to clipboard
+4. Auto Formatting content using AI
+    1. Options to format
+    2. Regenerate format
+    3. Revert format
 
+> [!NOTE]
+> Regenerate may give same results in certain cases
 
 [To Top](#top)
 
@@ -167,7 +175,7 @@ Supports
         1. Numbered
         2. Numbered
 2. Numbered
-    2. Numbered
+    1. Numbered
 
 - [ ] Task
     - [x] Task
@@ -193,7 +201,7 @@ Supports
         1. Numbered
         2. Numbered
 2. Numbered
-    2. Numbered
+    1. Numbered
 
 - [ ] Task
     - [x] Task
@@ -362,11 +370,11 @@ insert a one line divider to break up different sections, select again to remove
 Adds folding drop down text, supports multiple lines or just a single.
 
 <details>
-      <summary>Summary Line</summary>
-       <p>This is a line</p>
+  <summary>Summary Line</summary>
+   <p>This is a line</p>
  <p>Hello</p>
  <p>World</p>
-    </details>
+</details>
 
 ```plaintext
 <details>
@@ -383,18 +391,18 @@ Adds a table item, defaults as 2x2 with ability to add or remove columns and row
 Can easily swap column/row by selecting its swap button and then selecting another column/row swap button
 Defaults to Left aligned, click on the alignment button to toggle alignment
 
-| Header | Header | Header |
+| Left aligned Column | Center Aligned | Right Aligned |
 | :--- | :---: | ---: |
-| Hello | World | . |
-|  | a |  |
-| Some Things  | Can be  | Blank |
+| Text is left aligned | Text is |  |
+|  | Center |
+|  | Aligned | Text is right aligned |
 
 ```plaintext
-| Header | Header | Header |
+| Left aligned Column | Center Aligned | Right Aligned |
 | :--- | :---: | ---: |
-| Hello | World | . |
-|  | a |  |
-| Some Things  | Can be  | Blank |
+| Text is left aligned | Text is |  |
+|  | Center |
+|  | Aligned | Text is right aligned |
 ```
 
 
