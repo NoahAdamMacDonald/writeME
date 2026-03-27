@@ -19,22 +19,6 @@ export class FilePanelComponent {
   showSuccess = false;
 
   //helper functions
-  private pickImage(): Promise<File> {
-    return new Promise((resolve, reject) => {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-
-      input.onchange = () => {
-        const file = input.files?.[0];
-        if (!file) reject('No file selected');
-        else resolve(file);
-      };
-
-      input.click();
-    });
-  }
-
   private showConfirmation(message: string) {
     this.successMessage = message;
     this.showSuccess = true;
@@ -96,12 +80,47 @@ export class FilePanelComponent {
   //AI features
   async formatWithAI() {
     try {
+      this.editor.saveOriginalBeforeFormat();
+
       const raw = this.editor.content;
       const markdown = await this.ai.formatToMarkdown(raw);
+
+      this.editor.saveLastAiFormatted(markdown);
       this.editor.setContent(markdown);
+
       this.showConfirmation('Content formatted with AI');
     } catch (error: any) {
       this.showConfirmation(error.message);
     }
+  }
+
+  async regenerateFormatting() {
+    try {
+      if (!this.editor.originalBeforeFormat) {
+        this.showConfirmation('No original content to regenerate from');
+        return;
+      }
+
+      const markdown = await this.ai.formatToMarkdown(
+        this.editor.originalBeforeFormat,
+      );
+
+      this.editor.saveLastAiFormatted(markdown);
+      this.editor.setContent(markdown);
+
+      this.showConfirmation('Formatting regenerated');
+    } catch {
+      this.showConfirmation('Failed to regenerate formatting');
+    }
+  }
+
+  revertFormatting() {
+    if (!this.editor.originalBeforeFormat) {
+      this.showConfirmation('Nothing to revert');
+      return;
+    }
+
+    this.editor.revertToOriginal();
+    this.showConfirmation('Reverted to original content');
   }
 }
