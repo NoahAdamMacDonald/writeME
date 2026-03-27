@@ -54,6 +54,15 @@ export class SettingsService {
     }
   }
 
+  //Editor Highlighting
+  get editorHighlighting(): boolean {
+    return this.getSetting('editorHighlighting', true);
+  }
+
+  set editorHighlighting(value: boolean) {
+    this.setSetting('editorHighlighting', value);
+  }
+
   // Setting functions
   setSetting<T>(key: string, value: T) {
     localStorage.setItem(key, JSON.stringify(value));

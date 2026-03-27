@@ -6,6 +6,18 @@
          class="avatar" />
   </a>
 
+  <!--Settings-->
+  <label class="highlight-toggle">
+    <input
+      type="checkbox"
+      [checked]="settingsService.editorHighlighting"
+      (change)="settingsService.editorHighlighting = $any($event.target).checked"
+    />
+    <span>Highlight</span>
+  </label>
+
+
+
   <div class="footer-center">
     <a href="mailto:contact@noah-macdonald.com" class="email">
       contact&#64;noah-macdonald.com
