@@ -8,23 +8,17 @@ export class AiService {
   private workerUrl = environment.workerUrl;
   private model = environment.groqModel;
 
-  setModel(model: string) {
-    this.model = model;
-  }
-
   async formatToMarkdown(text: string): Promise<string> {
     const systemPrompt = await this.loadPrompt("assets/prompts/system.md");
     const userPrompt = await this.loadPrompt("assets/prompts/user.md");
 
+    const input = `${systemPrompt}\n\n${userPrompt.replace('{{TEXT}}', text)}`;
+
     const payload = {
       model: this.model,
       temperature: 0,
-      stream: false,
-      max_tokens: 2048,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt.replace('{{TEXT}}', text) },
-      ],
+      input,
+      max_output_tokens: 2048
     };
 
     const response = await fetch(this.workerUrl, {
@@ -40,7 +34,8 @@ export class AiService {
     }
 
     const data = await response.json();
-    const content = data?.choices?.[0]?.message?.content;
+
+const content =data?.output?.find((o: { type: string; }) => o.type === "message")?.content?.find((c: { type: string; }) => c.type === "output_text")?.text;
 
     if (!content) {
       throw new Error('AI returned no content.');
